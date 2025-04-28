@@ -2,12 +2,10 @@
 
 Orbi is a visually engaging, single-file HTML web interface for interacting with locally running Ollama models. It provides real-time streaming responses, text-to-speech output, and dynamic visual feedback through animated particle effects in an "orb" display.
 
-![Orbi Screenshot]
 
-Uploading Recording 2025-04-29 001617.mp4…
+![Screenshot 2025-04-29 001448](https://github.com/user-attachments/assets/ae20d5e4-0fc6-4347-8c16-041061ec0328)
 
 
-*(Suggestion: Replace the placeholder above with an actual screenshot or, even better, an animated GIF showcasing the different orb states!)*
 
 ## Features
 
@@ -39,7 +37,7 @@ Uploading Recording 2025-04-29 001617.mp4…
 2.  **Ollama Models:** You need to have the models you want to use pulled locally via Ollama. The UI dropdown includes common models by default, but they won't work unless pulled. Open your terminal/command prompt and run:
     ```bash
     ollama pull gemma3:12b
-    ollama pull deepseek-coder-v2
+    ollama pull deepseek-r1:8b
     ollama pull llama3
     ollama pull mistral
     # Pull any other models you wish to use
@@ -50,7 +48,7 @@ Uploading Recording 2025-04-29 001617.mp4…
 
 There is no complex installation process required.
 
-1.  **Download:** Download the latest `OrbiXX.html` file (e.g., `Orbi39.html`) from this repository.
+1.  **Download:** Download the latest `Orbi.html` file (e.g., `Orbi.html`) from this repository.
     *Alternatively, you can clone the repository:*
     ```bash
     git clone https://your-github-repo-url/orbi.git
