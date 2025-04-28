@@ -60,6 +60,15 @@ There is no complex installation process required.
 
 1.  **Start Ollama:** Make sure your Ollama application/service is running locally.
 2.  **Open the HTML File:** Simply open the downloaded `OrbiXX.html` file directly in your web browser (e.g., double-click the file or use `File -> Open File...` in your browser).
+3.  **Make sure http://localhost:8080/Orbi is in the correct directory
+4.  If you add more models, make sure you update the line of code in a text editor (notepad) and save:
+  
+                     <select id="modelSelector" class="control-item">
+                     <option value="gemma3:12b" selected>Gemma3 12B</option>
+                     <option value="deepseek-coder-v2">DeepSeek Coder V2</option>
+                     <option value="llama3">Llama 3</option>
+                     <option value="mistral">Mistral</option>
+
 
 **Note on CORS:** Orbi attempts to communicate with Ollama at `http://localhost:11434`. Default Ollama configurations usually allow requests from `file://` origins, but if you encounter connection errors (check the browser's developer console - F12), you might need to adjust Ollama's CORS settings (e.g., by setting the `OLLAMA_ORIGINS` environment variable before starting Ollama). Refer to the Ollama documentation for details.
 
