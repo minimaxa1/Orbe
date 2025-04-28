@@ -10,7 +10,7 @@ Orbi is a visually engaging, single-file HTML web interface for interacting with
 ## Features
 
 *   **Direct Ollama Integration:** Connects to your running Ollama instance (defaults to `http://localhost:11434`).
-*   **Model Selection:** Choose from available Ollama models directly in the UI (includes defaults like Gemma3, DeepSeek Coder V2, Llama 3, Mistral - requires models to be pulled locally).
+*   **Model Selection:** Choose from available Ollama models directly in the UI (includes defaults like Gemma3, Deepseek-r1:8b, Llama 3, Mistral - requires models to be pulled locally).
 *   **Text-to-Speech (TTS):** Enable voice output for Orbi's responses using browser-native speech synthesis.
 *   **Voice Selection:** Choose from available English system voices for TTS.
 *   **Streaming Responses:** See the model's response generate in real-time.
