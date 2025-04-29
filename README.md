@@ -54,14 +54,18 @@ There is no complex installation process required.
     git clone https://your-github-repo-url/orbi.git
     cd orbi
     ```
-2.  **That's it!** No build steps or dependencies are needed besides Ollama itself.
+2.  **That's it!** No build steps or dependencies are needed besides Ollama, models and node.js.
 
 ## Running Orbi
 
-1.  **Start Ollama:** Make sure your Ollama application/service is running locally.
-2.  **Open the HTML File:** Simply open the downloaded `OrbiXX.html` file directly in your web browser (e.g., double-click the file or use `File -> Open File...` in your browser).
-3.  **Make sure http://localhost:8080/Orbi is in the correct directory
-4.  If you add more models, make sure you update the line of code in a text editor (notepad) and save:
+1.  Download node.js and set up
+2.  Download and start Ollama: Ensure your Ollama service runs locally.
+4.  Open cmd and start the local host: npx serve . -l 8080 --cors
+5.  ![image](https://github.com/user-attachments/assets/c8c2d128-1002-44a3-a534-28644952f6bf)
+
+6.  **Open the HTML File:** Simply open the downloaded `OrbiXX.html` file directly in your web browser (e.g., double-click the file or use `File -> Open File...` in your browser).
+7.  **Make sure http://localhost:8080/Orbi is in the correct directory
+8.  If you add more models, make sure you update the line of code in a text editor (notepad) and save:
   
                      <select id="modelSelector" class="control-item">
                      <option value="gemma3:12b" selected>Gemma3 12B</option>
