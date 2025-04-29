@@ -31,10 +31,11 @@ Orbi is a visually engaging, single-file HTML web interface for interacting with
 
 ## Prerequisites
 
-1.  **Ollama Installation:** You **must** have Ollama installed and running on your local machine.
+1.  **Ollama Installation:** You must have Ollama installed and running on your local machine.
     *   Download and install from [https://ollama.ai/](https://ollama.ai/).
     *   Ensure the Ollama application/service is running in the background.
-2.  **Ollama Models:** You need to have the models you want to use pulled locally via Ollama. The UI dropdown includes common models by default, but they won't work unless pulled. Open your terminal/command prompt and run:
+2.  **Download node.js and set up
+3.  **Ollama Models:** You need to have the models you want to use pulled locally via Ollama. The UI dropdown includes common models by default, but they won't work unless pulled. Open your terminal/command prompt and run:
     ```bash
     ollama pull gemma3:12b
     ollama pull deepseek-r1:8b
@@ -42,7 +43,7 @@ Orbi is a visually engaging, single-file HTML web interface for interacting with
     ollama pull mistral
     # Pull any other models you wish to use
     ```
-3.  **Web Browser:** A modern web browser that supports `fetch`, `SpeechSynthesis`, and `Canvas` (e.g., Chrome, Firefox, Edge).
+4.  **Web Browser:** A modern web browser that supports `fetch`, `SpeechSynthesis`, and `Canvas` (e.g., Chrome, Firefox, Edge).
 
 ## Installation
 
@@ -58,14 +59,13 @@ There is no complex installation process required.
 
 ## Running Orbi
 
-1.  Download node.js and set up
-2.  Download and start Ollama: Ensure your Ollama service runs locally.
-4.  Open cmd and start the local host: npx serve . -l 8080 --cors
-5.  ![image](https://github.com/user-attachments/assets/c8c2d128-1002-44a3-a534-28644952f6bf)
+1.  Download and start Ollama: Ensure your Ollama service runs locally.
+2.  Open cmd and start the local host: npx serve . -l 8080 --cors
+3.  ![image](https://github.com/user-attachments/assets/c8c2d128-1002-44a3-a534-28644952f6bf)
 
-6.  **Open the HTML File:** Simply open the downloaded `OrbiXX.html` file directly in your web browser (e.g., double-click the file or use `File -> Open File...` in your browser).
-7.  **Make sure http://localhost:8080/Orbi is in the correct directory
-8.  If you add more models, make sure you update the line of code in a text editor (notepad) and save:
+4.  **Open the HTML File:** Simply open the downloaded `OrbiXX.html` file directly in your web browser (e.g., double-click the file or use `File -> Open File...` in your browser).
+5.  **Make sure http://localhost:8080/Orbi is in the correct directory
+6.  If you add more models, make sure you update the line of code in a text editor (notepad) and save:
   
                      <select id="modelSelector" class="control-item">
                      <option value="gemma3:12b" selected>Gemma3 12B</option>
