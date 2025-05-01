@@ -92,6 +92,7 @@ That's it! Orbi should load, fetch your available Ollama models, and be ready to
     *   Use controls in the `controls-row` to manage TTS, snippets, chat history, or regenerate responses.
     *   Interact with code blocks using the buttons provided below them (copy, edit, save, explain, etc.).
     *   Save/load configurations using the Presets controls.
+    *   TTS: Each web browser has their own preloaded voices - (some are better than others and with more options)
 
 ## Configuration Details
 
