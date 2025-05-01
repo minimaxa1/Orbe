@@ -1,7 +1,8 @@
 # Orbi ✨ (Ollama Advanced Web UI)
 
 
-![Screenshot 2025-05-01 114231](https://github.com/user-attachments/assets/d00c55a2-c778-49aa-9a4c-823873941b2b)
+![Screenshot 2025-05-01 214935](https://github.com/user-attachments/assets/cad0f743-9cde-4dcd-a70c-f544d5a43dea)
+
 
 
 Orbi is a feature-rich, single-file web interface designed to interact directly with a locally running Ollama instance. It provides a highly customizable chat experience with advanced controls, multimedia output, code handling, and configuration management, all within your browser without needing complex server setups. 
