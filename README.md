@@ -114,7 +114,7 @@ This is currently a single-file project. Contributions like bug fixes, feature s
 
 ## License
 
-[MIT, Apache 2.0]
+This project is licensed under the GPL. See the LICENSE file for details.
 
 
 Enjoy!
