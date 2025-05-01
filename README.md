@@ -74,8 +74,9 @@ Orbi is a feature-rich, single-file web interface designed to interact directly 
 ## Setup
 
 1.  **Ensure Ollama is running** and accessible at `http://localhost:11434`.
-2.  **Download** the `Orbi.html` file.
-3.  **Open** the `Orbi.html` file directly in your web browser (e.g., using `File -> Open File...`).
+2.  Node.js is running - open cmd run: npx serve . -l 8080 --cors
+3.  **Download** the `Orbi.html` file.
+4.  **Open** the `Orbi.html` file directly in your web browser (e.g., using `File -> Open File...`).
 
 That's it! Orbi should load, fetch your available Ollama models, and be ready to use.
 
