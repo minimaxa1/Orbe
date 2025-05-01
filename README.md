@@ -5,7 +5,7 @@
 
 
 
-Orbi is a feature-rich, single-file web interface designed to interact directly with a locally running Ollama instance. It provides a highly customizable chat experience with advanced controls, multimedia output, code handling, and configuration management, all within your browser without needing complex server setups. 
+Orbi is a feature-rich, single-file web interface designed to interact directly with a locally running Ollama instance. It provides a highly customizable chat experience with advanced controls, code output, code handling, and configuration management, all within your browser without needing complex server setups. 
 
 ## ✨ Key Features
 
