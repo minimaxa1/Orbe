@@ -3,7 +3,7 @@
 [![Orbi Screenshot](placeholder.png)](placeholder.png)
 
 
-Orbi is a feature-rich, single-file web interface designed to interact directly with a locally running Ollama instance. It provides a highly customizable chat experience with advanced controls, multimedia output, code handling, and configuration management, all within your browser without needing complex server setups. This version includes specific prompt engineering to enforce English-only responses from the AI model.
+Orbi is a feature-rich, single-file web interface designed to interact directly with a locally running Ollama instance. It provides a highly customizable chat experience with advanced controls, multimedia output, code handling, and configuration management, all within your browser without needing complex server setups. 
 
 ## ✨ Key Features
 
@@ -15,7 +15,7 @@ Orbi is a feature-rich, single-file web interface designed to interact directly 
     *   View detailed model information (parameters, template, license).
     *   Delete models directly from the UI.
 *   **🤖 Personality Modes & Prompts:**
-    *   Pre-defined modes (Default, Coder, Business, Creative, **Wizard**) with tailored system prompts.
+    *   Pre-defined modes (Default, Coder, Business, Creative, Wizard) with tailored system prompts.
     *   **Wizard Mode:** Aims for direct, concise output without conversational filler.
     *   Custom system prompt editor for fine-tuning AI behavior.
     *   **Language Fix:** System prompts explicitly instruct the AI to respond *only* in English.
