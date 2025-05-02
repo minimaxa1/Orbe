@@ -1,7 +1,7 @@
 # Orbi ✨ (Ollama Advanced Web UI)
 
 
-![Screenshot 2025-05-02 110559](https://github.com/user-attachments/assets/2ffcdc26-cdf4-4f9f-8004-7d30a6fdeb9d)
+![Screenshot 2025-05-02 111030](https://github.com/user-attachments/assets/4a99c2a9-4a78-4c36-a79a-05ff38bf56ec)
 
 
 
