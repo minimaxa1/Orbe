@@ -6,30 +6,82 @@
     <title>Orbi</title>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-okaidia.min.css" />
+    <!-- Feather Icons -->
+    <script src="https://unpkg.com/feather-icons"></script>
 
     <style>
         /* --- CSS (Layout Changes for Controls) --- */
-        * { margin: 0; padding: 0; box-sizing: border-box; } html, body { height: 100%; overflow: hidden; } body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #000000; color: #ffffff; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 10px; position: relative; } body.modal-open { overflow: hidden; } #particleCanvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; } .container { text-align: center; padding: 0; border-radius: 15px; max-width: 95%; width: 960px; position: relative; z-index: 1; display: flex; flex-direction: column; height: calc(100vh - 40px); background-color: #111; border: none; box-shadow: 0 5px 20px rgba(0,0,0,0.7); overflow: hidden; } .control-item { font-size: 0.8rem; padding: 0 8px; border-radius: 6px; border: 1px solid #383838; background-image: linear-gradient(to bottom,rgba(180,180,180,0.1) 0%,rgba(140,140,140,0.08) 15%,rgba(100,100,100,0.08) 40%,rgba(70,70,70,0.15) 70%,rgba(50,50,50,0.2) 90%,rgba(35,35,35,0.3) 100%), linear-gradient(to bottom, #5a5a5a, #383838); background-color: #444; color: #ddd; cursor: pointer; transition: background-image 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease; height: 28px; display: inline-flex; align-items: center; justify-content: center; vertical-align: middle; box-sizing: border-box; flex-shrink: 0; min-width: 30px; box-shadow: 0 1px 1px rgba(0,0,0,0.5), inset 0 1px 0px rgba(255,255,255,0.06); text-shadow: 0 1px 1px rgba(0,0,0,0.6); } .control-item:hover { border-color: #555; background-image: linear-gradient(to bottom,rgba(190,190,190,0.12) 0%,rgba(150,150,150,0.1) 15%,rgba(110,110,110,0.1) 40%,rgba(80,80,80,0.18) 70%,rgba(60,60,60,0.25) 90%,rgba(45,45,45,0.35) 100%), linear-gradient(to bottom, #6a6a6a, #484848); box-shadow: 0 2px 2px rgba(0,0,0,0.6), inset 0 1px 0px rgba(255,255,255,0.08); } .control-item:active { background-image: linear-gradient(to top,rgba(180,180,180,0.08) 0%,rgba(140,140,140,0.06) 15%,rgba(100,100,100,0.06) 40%,rgba(70,70,70,0.12) 70%,rgba(50,50,50,0.18) 90%,rgba(35,35,35,0.25) 100%), linear-gradient(to top, #5a5a5a, #383838); box-shadow: inset 0 1px 3px rgba(0,0,0,0.5); text-shadow: none; } .control-item:focus { outline: none; border-color: #777; box-shadow: 0 1px 1px rgba(0,0,0,0.5), inset 0 0 0 1px rgba(150, 150, 150, 0.4), inset 0 1px 0px rgba(255,255,255,0.06); } textarea#questionInput:focus { outline: none; border-color: #888; box-shadow: inset 0 1px 3px rgba(0,0,0,0.4), 0 0 0 2px rgba(80, 80, 80, 0.3); } .control-item:disabled { opacity: 0.6; cursor: not-allowed; background-image: linear-gradient(to bottom, #4a4a4a, #2f2f2f); border-color: #2f2f2f; box-shadow: inset 0 1px 2px rgba(0,0,0,0.4); text-shadow: none; } select.control-item { min-width: 60px; max-width: 110px; padding-left: 8px; padding-right: 20px; justify-content: flex-start; -webkit-appearance: none; -moz-appearance: none; appearance: none; background-position: right 6px center; background-repeat: no-repeat; background-size: 8px 8px; background-image: linear-gradient(to bottom,rgba(180,180,180,0.1) 0%,rgba(140,140,140,0.08) 15%,rgba(100,100,100,0.08) 40%,rgba(70,70,70,0.15) 70%,rgba(50,50,50,0.2) 90%,rgba(35,35,35,0.3) 100%), linear-gradient(to bottom, #5a5a5a, #383838), url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 80'%3E%3Cpath d='M.75 16.75l38.5 38.5 38.5-38.5z' fill='%23dddddd'/%3E%3C/svg%3E"); } select#modeSelector.control-item { min-width: 80px; max-width: 140px; } select.control-item:hover { background-image: linear-gradient(to bottom,rgba(190,190,190,0.12) 0%,rgba(150,150,150,0.1) 15%,rgba(110,110,110,0.1) 40%,rgba(80,80,80,0.18) 70%,rgba(60,60,60,0.25) 90%,rgba(45,45,45,0.35) 100%), linear-gradient(to bottom, #6a6a6a, #484848), url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 80'%3E%3Cpath d='M.75 16.75l38.5 38.5 38.5-38.5z' fill='%23ffffff'/%3E%3C/svg%3E"); } button.control-item { font-weight: bold; padding: 0 8px; } #stopGeneratingButton { border: 1px solid #a00; background-image: linear-gradient(to bottom,rgba(255,100,100,0.12) 0%,rgba(200,80,80,0.1) 15%,rgba(160,60,60,0.1) 40%,rgba(130,40,40,0.2) 70%,rgba(110,20,20,0.3) 90%,rgba(90,0,0,0.4) 100%), linear-gradient(to bottom, #a33, #800); display: none; color: #fcc; margin-left: 5px; } #stopGeneratingButton:hover { border-color: #c00; background-image: linear-gradient(to bottom,rgba(255,120,120,0.15) 0%,rgba(210,100,100,0.12) 15%,rgba(170,80,80,0.12) 40%,rgba(140,60,60,0.25) 70%,rgba(120,40,40,0.35) 90%,rgba(100,20,20,0.45) 100%), linear-gradient(to bottom, #b44, #911); } #stopGeneratingButton:active { background-image: linear-gradient(to top,rgba(255,100,100,0.1) 0%,rgba(200,80,80,0.08) 15%,rgba(160,60,60,0.08) 40%,rgba(130,40,40,0.18) 70%,rgba(110,20,20,0.28) 90%,rgba(90,0,0,0.38) 100%), linear-gradient(to top, #a33, #800); box-shadow: inset 0 1px 3px rgba(0,0,0,0.5); } #playPauseButton, #fastForwardButton { display: none; } #playPauseButton { padding: 0; width: 28px; min-width: 28px; background-repeat: no-repeat; background-position: center center; background-size: 10px 10px; } #playPauseButton.paused { background-image: linear-gradient(to bottom,rgba(180,180,180,0.1) 0%,rgba(140,140,140,0.08) 15%,rgba(100,100,100,0.08) 40%,rgba(70,70,70,0.15) 70%,rgba(50,50,50,0.2) 90%,rgba(35,35,35,0.3) 100%), linear-gradient(to bottom, #5a5a5a, #383838), url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpolygon points='30,20 30,80 80,50' fill='%23eeeeee'/%3E%3C/svg%3E"); } #playPauseButton.paused:hover { background-image: linear-gradient(to bottom,rgba(190,190,190,0.12) 0%,rgba(150,150,150,0.1) 15%,rgba(110,110,110,0.1) 40%,rgba(80,80,80,0.18) 70%,rgba(60,60,60,0.25) 90%,rgba(45,45,45,0.35) 100%), linear-gradient(to bottom, #6a6a6a, #484848), url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpolygon points='30,20 30,80 80,50' fill='%23ffffff'/%3E%3C/svg%3E"); } #playPauseButton.playing { background-image: linear-gradient(to bottom,rgba(180,180,180,0.1) 0%,rgba(140,140,140,0.08) 15%,rgba(100,100,100,0.08) 40%,rgba(70,70,70,0.15) 70%,rgba(50,50,50,0.2) 90%,rgba(35,35,35,0.3) 100%), linear-gradient(to bottom, #5a5a5a, #383838), url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect x='25' y='20' width='15' height='60' fill='%23eeeeee'/%3E%3Crect x='60' y='20' width='15' height='60' fill='%23eeeeee'/%3E%3C/svg%3E"); } #playPauseButton.playing:hover { background-image: linear-gradient(to bottom,rgba(190,190,190,0.12) 0%,rgba(150,150,150,0.1) 15%,rgba(110,110,110,0.1) 40%,rgba(80,80,80,0.18) 70%,rgba(60,60,60,0.25) 90%,rgba(45,45,45,0.35) 100%), linear-gradient(to bottom, #6a6a6a, #484848), url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect x='25' y='20' width='15' height='60' fill='%23ffffff'/%3E%3Crect x='60' y='20' width='15' height='60' fill='%23ffffff'/%3E%3C/svg%3E"); } #fastForwardButton .rate-display { font-size: 0.75em; margin-left: 4px; color: #ccc; font-weight: normal; }
-        /* Updated TTS Button Styles */
-        #ttsToggleButton { min-width: 50px; font-weight: normal; }
-        #ttsToggleButton.tts-enabled {
-            background-image: linear-gradient(to bottom,rgba(180,220,180,0.1) 0%,rgba(140,190,140,0.08) 15%,rgba(100,160,100,0.08) 40%,rgba(70,130,70,0.15) 70%,rgba(50,110,50,0.2) 90%,rgba(35,90,35,0.3) 100%), linear-gradient(to bottom, #6a6, #484);
-            border-color: #595;
-            color: #efe;
+        * { margin: 0; padding: 0; box-sizing: border-box; } html, body { height: 100%; overflow: hidden; } body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #000000; color: #ffffff; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 10px; position: relative; } body.modal-open { overflow: hidden; } #particleCanvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; } .container { text-align: center; padding: 0; border-radius: 15px; max-width: 95%; width: 960px; position: relative; z-index: 1; display: flex; flex-direction: column; height: calc(100vh - 40px); background-color: #111; border: none; box-shadow: 0 5px 20px rgba(0,0,0,0.7); overflow: hidden; }
+        /* Control Item Base Style */
+        .control-item {
+            font-size: 0.8rem; padding: 0 8px; border-radius: 6px; border: 1px solid #383838; background-image: linear-gradient(to bottom,rgba(180,180,180,0.1) 0%,rgba(140,140,140,0.08) 15%,rgba(100,100,100,0.08) 40%,rgba(70,70,70,0.15) 70%,rgba(50,50,50,0.2) 90%,rgba(35,35,35,0.3) 100%), linear-gradient(to bottom, #5a5a5a, #383838); background-color: #444; color: #ddd; cursor: pointer; transition: background-image 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease; height: 28px; display: inline-flex; align-items: center; justify-content: center; vertical-align: middle; box-sizing: border-box; flex-shrink: 0; min-width: 30px; box-shadow: 0 1px 1px rgba(0,0,0,0.5), inset 0 1px 0px rgba(255,255,255,0.06); text-shadow: 0 1px 1px rgba(0,0,0,0.6);
+            gap: 5px; /* Add gap for icon/text spacing */
         }
-        #ttsToggleButton.tts-enabled:hover {
-            background-image: linear-gradient(to bottom,rgba(190,230,190,0.12) 0%,rgba(150,200,150,0.1) 15%,rgba(110,170,110,0.1) 40%,rgba(80,140,80,0.18) 70%,rgba(60,120,60,0.25) 90%,rgba(45,100,45,0.35) 100%), linear-gradient(to bottom, #7b7, #595);
-            border-color: #6a6;
+        .control-item:hover { border-color: #555; background-image: linear-gradient(to bottom,rgba(190,190,190,0.12) 0%,rgba(150,150,150,0.1) 15%,rgba(110,110,110,0.1) 40%,rgba(80,80,80,0.18) 70%,rgba(60,60,60,0.25) 90%,rgba(45,45,45,0.35) 100%), linear-gradient(to bottom, #6a6a6a, #484848); box-shadow: 0 2px 2px rgba(0,0,0,0.6), inset 0 1px 0px rgba(255,255,255,0.08); }
+        .control-item:active { background-image: linear-gradient(to top,rgba(180,180,180,0.08) 0%,rgba(140,140,140,0.06) 15%,rgba(100,100,100,0.06) 40%,rgba(70,70,70,0.12) 70%,rgba(50,50,50,0.18) 90%,rgba(35,35,35,0.25) 100%), linear-gradient(to top, #5a5a5a, #383838); box-shadow: inset 0 1px 3px rgba(0,0,0,0.5); text-shadow: none; }
+        .control-item:focus { outline: none; border-color: #777; box-shadow: 0 1px 1px rgba(0,0,0,0.5), inset 0 0 0 1px rgba(150, 150, 150, 0.4), inset 0 1px 0px rgba(255,255,255,0.06); }
+        textarea#questionInput:focus { outline: none; border-color: #888; box-shadow: inset 0 1px 3px rgba(0,0,0,0.4), 0 0 0 2px rgba(80, 80, 80, 0.3); }
+        .control-item:disabled { opacity: 0.6; cursor: not-allowed; background-image: linear-gradient(to bottom, #4a4a4a, #2f2f2f); border-color: #2f2f2f; box-shadow: inset 0 1px 2px rgba(0,0,0,0.4); text-shadow: none; }
+        /* Feather Icon Styling */
+        .control-item svg.feather { width: 14px; height: 14px; vertical-align: middle; stroke-width: 1.8; /* Thinner lines */ }
+        .control-item span + svg.feather, /* Icon after text */
+        .control-item svg.feather + span { /* Icon before text */
+             margin-left: 0; /* Reset potential margin if needed, gap handles spacing */
+             margin-right: 0;
         }
-        .orb-shape-container { position: relative; width: 90px; height: 90px; margin: 15px auto 10px auto; cursor: default; z-index: 4; flex-shrink: 0; align-self: center; } .orb-shape { width: 100%; height: 100%; border-radius: 50%; border: 2px solid #cccccc; position: relative; z-index: 1; box-shadow: 0 4px 12px rgba(0,0,0,0.5), inset 0 2px 4px rgba(0,0,0,0.4); overflow: hidden; background-color: transparent; /* Let particles show through */ } #orbParticleCanvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 50%; pointer-events: none; z-index: 0; }
+        /* Select Specific Styling */
+        select.control-item {
+            padding-left: 8px; /* Adjust padding for icon */
+            padding-right: 20px;
+            justify-content: flex-start;
+            -webkit-appearance: none; -moz-appearance: none; appearance: none; background-position: right 6px center; background-repeat: no-repeat; background-size: 8px 8px; background-image: linear-gradient(to bottom,rgba(180,180,180,0.1) 0%,rgba(140,140,140,0.08) 15%,rgba(100,100,100,0.08) 40%,rgba(70,70,70,0.15) 70%,rgba(50,50,50,0.2) 90%,rgba(35,35,35,0.3) 100%), linear-gradient(to bottom, #5a5a5a, #383838), url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 80'%3E%3Cpath d='M.75 16.75l38.5 38.5 38.5-38.5z' fill='%23dddddd'/%3E%3C/svg%3E");
+        }
+        select#modeSelector.control-item { min-width: 100px; max-width: 160px; } /* Adjust width for icon */
+        select#presetSelector.control-item { min-width: 100px; max-width: 160px; } /* Adjust width for icon */
+        select.control-item:hover { background-image: linear-gradient(to bottom,rgba(190,190,190,0.12) 0%,rgba(150,150,150,0.1) 15%,rgba(110,110,110,0.1) 40%,rgba(80,80,80,0.18) 70%,rgba(60,60,60,0.25) 90%,rgba(45,45,45,0.35) 100%), linear-gradient(to bottom, #6a6a6a, #484848), url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 80'%3E%3Cpath d='M.75 16.75l38.5 38.5 38.5-38.5z' fill='%23ffffff'/%3E%3C/svg%3E"); }
+        /* Button Specific Styling */
+        button.control-item { /* Removed font-weight bold */ padding: 0 8px; }
+        #stopGeneratingButton { border: 1px solid #a00; background-image: linear-gradient(to bottom,rgba(255,100,100,0.12) 0%,rgba(200,80,80,0.1) 15%,rgba(160,60,60,0.1) 40%,rgba(130,40,40,0.2) 70%,rgba(110,20,20,0.3) 90%,rgba(90,0,0,0.4) 100%), linear-gradient(to bottom, #a33, #800); display: none; color: #fcc; margin-left: 5px; }
+        #stopGeneratingButton:hover { border-color: #c00; background-image: linear-gradient(to bottom,rgba(255,120,120,0.15) 0%,rgba(210,100,100,0.12) 15%,rgba(170,80,80,0.12) 40%,rgba(140,60,60,0.25) 70%,rgba(120,40,40,0.35) 90%,rgba(100,20,20,0.45) 100%), linear-gradient(to bottom, #b44, #911); }
+        #stopGeneratingButton:active { background-image: linear-gradient(to top,rgba(255,100,100,0.1) 0%,rgba(200,80,80,0.08) 15%,rgba(160,60,60,0.08) 40%,rgba(130,40,40,0.18) 70%,rgba(110,20,20,0.28) 90%,rgba(90,0,0,0.38) 100%), linear-gradient(to top, #a33, #800); box-shadow: inset 0 1px 3px rgba(0,0,0,0.5); }
+
+        /* --- ** NEW: TTS Playing State for Play Button ** --- */
+        #playPauseButton.tts-playing {
+            background-image: linear-gradient(to bottom,rgba(180,210,255,0.1) 0%,rgba(140,180,230,0.08) 15%,rgba(100,150,210,0.08) 40%,rgba(70,120,190,0.15) 70%,rgba(50,100,170,0.2) 90%,rgba(35,80,150,0.3) 100%), linear-gradient(to bottom, #68b, #469);
+            border-color: #57a;
+            color: #eff; /* Lighten icon color */
+        }
+        #playPauseButton.tts-playing:hover {
+             background-image: linear-gradient(to bottom,rgba(190,220,255,0.12) 0%,rgba(150,190,240,0.1) 15%,rgba(110,160,220,0.1) 40%,rgba(80,130,200,0.18) 70%,rgba(60,110,180,0.25) 90%,rgba(45,90,160,0.35) 100%), linear-gradient(to bottom, #79c, #57a);
+             border-color: #68b;
+        }
+        /* --- ** END: TTS Playing State ** --- */
+
+        #playPauseButton, #fastForwardButton { display: none; }
+        #playPauseButton svg.feather { vertical-align: middle; }
+
+        #fastForwardButton .rate-display { font-size: 0.75em; margin-left: 4px; color: #ccc; font-weight: normal; }
+        /* TTS Button Specific Styles */
+        #ttsToggleButton { min-width: 75px; justify-content: center; }
+        #ttsToggleButton span { margin-left: 4px; }
+        #ttsToggleButton.tts-enabled { background-image: linear-gradient(to bottom,rgba(180,220,180,0.1) 0%,rgba(140,190,140,0.08) 15%,rgba(100,160,100,0.08) 40%,rgba(70,130,70,0.15) 70%,rgba(50,110,50,0.2) 90%,rgba(35,90,35,0.3) 100%), linear-gradient(to bottom, #6a6, #484); border-color: #595; color: #efe; }
+        #ttsToggleButton.tts-enabled:hover { background-image: linear-gradient(to bottom,rgba(190,230,190,0.12) 0%,rgba(150,200,150,0.1) 15%,rgba(110,170,110,0.1) 40%,rgba(80,140,80,0.18) 70%,rgba(60,120,60,0.25) 90%,rgba(45,100,45,0.35) 100%), linear-gradient(to bottom, #7b7, #595); border-color: #6a6; }
+        /* Orb Styles */
+        .orb-shape-container { position: relative; width: 90px; height: 90px; margin: 15px auto 10px auto; cursor: default; z-index: 4; flex-shrink: 0; align-self: center; } .orb-shape { width: 100%; height: 100%; border-radius: 50%; border: 2px solid #cccccc; position: relative; z-index: 1; box-shadow: 0 4px 12px rgba(0,0,0,0.5), inset 0 2px 4px rgba(0,0,0,0.4); overflow: hidden; background-color: transparent; } #orbParticleCanvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 50%; pointer-events: none; z-index: 0; }
+        /* Input Area Styles */
         .input-area { width: 100%; padding: 8px 15px; margin: 0; display: flex; flex-direction: column; gap: 6px; background-color: rgba(26, 26, 26, 0.8); border-top: 1px solid #333; flex-shrink: 0; z-index: 5; } .input-row { display: flex; width: 100%; gap: 6px; align-items: center; }
         textarea#questionInput { flex-grow: 1; padding: 8px 12px; border: 1px solid #555; border-radius: 8px; font-size: 0.9rem; background-color: #252525; color: #ffffff; box-shadow: inset 0 1px 3px rgba(0,0,0,0.4); margin: 0; line-height: 1.4; max-height: 100px; resize: none; height: 32px; box-sizing: border-box; overflow-y: auto; font-family: inherit; } textarea#questionInput::placeholder { color: #aaa; opacity: 0.8; }
+        /* Chat Display Styles */
         #chatDisplayArea { flex-grow: 1; width: 100%; overflow-y: auto; padding: 10px 20px; background-color: rgba(20, 20, 20, 0.08); border: none; display: flex; flex-direction: column; align-items: stretch; scrollbar-width: thin; scrollbar-color: rgba(85, 85, 85, 0.7) rgba(34, 34, 34, 0.5); scroll-behavior: smooth; } #chatDisplayArea::-webkit-scrollbar { width: 8px; } #chatDisplayArea::-webkit-scrollbar-track { background: rgba(34, 34, 34, 0.5); border-radius: 4px; } #chatDisplayArea::-webkit-scrollbar-thumb { background-color: rgba(85, 85, 85, 0.7); border-radius: 4px; } .message-pair { margin-bottom: 15px; max-width: 100%; display: flex; flex-direction: column; } .user-message, .orbi-message, .thinking-message { padding: 10px 14px; border-radius: 12px; line-height: 1.6; font-size: 14px; word-wrap: break-word; overflow-wrap: break-word; text-align: left; max-width: 90%; box-shadow: 0 1px 2px rgba(0,0,0,0.5); color: #f0f0f0; position: relative; } .orbi-message { padding-bottom: 5px; background-color: rgba(40, 40, 40, 0.6); align-self: flex-start; border-bottom-left-radius: 3px; } .user-message { background-color: rgba(58, 58, 58, 0.6); align-self: flex-end; border-bottom-right-radius: 3px; } .orbi-message i { color: #ffcccc; font-style: normal; } .thinking-message { background-color: rgba(32, 32, 32, 0.5); color: #bbb; align-self: flex-start; font-style: italic; border-bottom-left-radius: 3px; padding-right: 14px; } .message-label { font-weight: bold; display: block; margin-bottom: 4px; font-size: 0.8em; color: #ccc; } .copy-button { position: absolute; bottom: 5px; right: 8px; width: 24px; height: 24px; background-color: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.15); color: #bbb; border-radius: 4px; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.2s ease, background-color 0.2s ease; z-index: 1; } .orbi-message:not(:has(.code-block-wrapper)):hover .copy-button { opacity: 0.7; } .copy-button:hover { opacity: 1; background-color: rgba(255, 255, 255, 0.2); } .copy-button:active { background-color: rgba(255, 255, 255, 0.3); } .copy-button.copied { opacity: 1; background-color: #3a7; color: #fff; } .copy-button svg { width: 12px; height: 12px; stroke: currentColor; }
+        /* Code Block Styles */
         .code-block-wrapper { background-color: transparent; border: 1px solid #444; border-radius: 6px; margin: 10px 0; position: relative; overflow: hidden; padding-top: 25px; } .code-block-wrapper pre[class*="language-"] { margin: 0 !important; padding: 10px 15px 5px 15px !important; background: none !important; border-radius: 0 !important; } .code-block-wrapper code[class*="language-"] { font-family: 'Consolas', 'Monaco', 'Courier New', monospace !important; font-size: 0.85em !important; line-height: 1.5 !important; color: #cdd; white-space: pre !important; } .code-block-wrapper pre { overflow-x: auto; scrollbar-width: thin; scrollbar-color: rgba(85, 85, 85, 0.7) rgba(34, 34, 34, 0.5); } .code-block-wrapper pre::-webkit-scrollbar { height: 8px; width: 8px; } .code-block-wrapper pre::-webkit-scrollbar-track { background: rgba(34, 34, 34, 0.5); border-radius: 4px; } .code-block-wrapper pre::-webkit-scrollbar-thumb { background-color: rgba(85, 85, 85, 0.7); border-radius: 4px; } .code-language-label { position: absolute; top: 4px; left: 8px; font-size: 0.7em; color: #aaa; font-family: sans-serif; text-transform: uppercase; background-color: rgba(40, 40, 40, 0.7); padding: 1px 4px; border-radius: 3px; z-index: 1; } .code-block-actions { display: flex; gap: 4px; justify-content: flex-end; padding: 6px 8px; background-color: rgba(50, 50, 50, 0.6); border-top: 1px solid #444; flex-wrap: wrap; } .code-block-wrapper.editing .code-block-actions { display: none; } .code-block-button { width: 24px; height: 24px; padding: 0; background-color: rgba(80, 80, 80, 0.5); border: 1px solid rgba(120, 120, 120, 0.5); color: #ccc; border-radius: 4px; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; opacity: 0.7; transition: opacity 0.2s ease, background-color 0.2s ease, color 0.2s ease; z-index: 2; } .code-block-wrapper:hover .code-block-button { opacity: 0.9; } .code-block-button:hover { opacity: 1; background-color: rgba(100, 100, 100, 0.7); color: #fff; } .code-block-button:active { background-color: rgba(120, 120, 120, 0.8); } .code-block-button.copied svg, .code-block-button.saved svg { stroke: #fff; } .code-block-button.copied { background-color: #3a7; } .code-block-button.saved { background-color: #a83; }
         .code-block-button.playing-tts { background-color: #39b; border-color: #5bd; box-shadow: 0 0 5px rgba(51, 153, 187, 0.5); }
         .code-block-button svg { width: 13px; height: 13px; stroke: currentColor; vertical-align: middle; } .action-divider { display: inline-block; width: 1px; height: 16px; background-color: rgba(120, 120, 120, 0.5); margin: 0 4px; vertical-align: middle; }
+        /* Snippets Panel Styles */
         #snippetsPanel { display: none; position: absolute; bottom: 85px; right: 15px; width: 350px; max-height: 40vh; background-color: rgba(30, 30, 30, 0.95); border: 1px solid #555; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.5); z-index: 10; overflow-y: auto; padding: 5px; scrollbar-width: thin; scrollbar-color: rgba(85, 85, 85, 0.7) rgba(34, 34, 34, 0.5); } #snippetsPanel::-webkit-scrollbar { width: 8px; } #snippetsPanel::-webkit-scrollbar-track { background: rgba(34, 34, 34, 0.5); border-radius: 4px; } #snippetsPanel::-webkit-scrollbar-thumb { background-color: rgba(85, 85, 85, 0.7); border-radius: 4px; } #snippetsPanel h4 { margin: 5px 10px; font-size: 0.9em; color: #ccc; border-bottom: 1px solid #444; padding-bottom: 3px; } #snippetsList { list-style: none; padding: 0; margin: 0; } #snippetsList li { background-color: rgba(50, 50, 50, 0.5); border-radius: 4px; margin: 4px 0; padding: 6px 8px; font-size: 0.8em; color: #ddd; display: flex; justify-content: space-between; align-items: center; cursor: default; } #snippetsList li:hover { background-color: rgba(65, 65, 65, 0.7); } .snippet-info { flex-grow: 1; margin-right: 10px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; } .snippet-lang { font-weight: bold; color: #aaa; margin-right: 5px; text-transform: uppercase; font-size: 0.9em; } .snippet-preview { color: #ccc; } .snippet-actions button { background: none; border: 1px solid #666; color: #bbb; border-radius: 3px; padding: 1px 4px; font-size: 11px; cursor: pointer; margin-left: 4px; transition: background-color 0.2s, color 0.2s; } .snippet-actions button:hover { background-color: #555; color: #fff; } .snippet-actions button.delete:hover { background-color: #a44; border-color: #c66; color: #fff; } .no-snippets { padding: 15px; text-align: center; color: #888; font-style: italic; font-size: 0.9em; }
+        /* Modal Styles */
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.75); display: none; align-items: center; justify-content: center; z-index: 1000; padding: 20px; } .modal-content { background-color: #222; border-radius: 10px; border: 1px solid #555; width: 90%; height: 85%; max-width: 1200px; display: flex; flex-direction: column; box-shadow: 0 10px 30px rgba(0,0,0,0.5); overflow: hidden; } .modal-header { display: flex; justify-content: space-between; align-items: center; padding: 8px 15px; background-color: #333; border-bottom: 1px solid #555; flex-shrink: 0; } .modal-title { font-size: 1em; color: #eee; } .modal-close { background: none; border: none; color: #aaa; font-size: 1.5em; line-height: 1; cursor: pointer; padding: 0 5px; transition: color 0.2s ease; } .modal-close:hover { color: #fff; } .modal-body { flex-grow: 1; padding: 15px; overflow-y: auto; } .modal-body textarea { width: 100%; height: 100%; border: none; outline: none; resize: none; background-color: #1e1e1e; color: #d4d4d4; font-family: 'Consolas', 'Monaco', 'Courier New', monospace; font-size: 14px; line-height: 1.6; padding: 10px; white-space: pre; overflow: auto; tab-size: 4; -moz-tab-size: 4; } .modal-body pre { background-color: #1e1e1e; color: #d4d4d4; padding: 15px; border-radius: 4px; white-space: pre-wrap; word-wrap: break-word; font-size: 0.9em; max-height: 65vh; overflow-y: auto; } #modelInfoBody { padding: 0; } #systemPromptModal .modal-body { padding: 0; } #systemPromptTextarea { height: 100%; padding: 10px; font-size: 0.9em; } .modal-footer { padding: 8px 15px; text-align: right; background-color: #333; border-top: 1px solid #555; flex-shrink: 0; } .modal-button { font-size: 0.9rem; padding: 5px 15px; border-radius: 5px; border: 1px solid #555; background-color: #666; color: #eee; cursor: pointer; margin-left: 10px; transition: background-color 0.2s ease, border-color 0.2s ease; } .modal-button:hover { background-color: #777; border-color: #888; } .modal-button.save { background-color: #4a4; border-color: #5b5; } .modal-button.save:hover { background-color: #5c5; border-color: #6d6; } .modal-button.cancel { background-color: #944; border-color: #a55; } .modal-button.cancel:hover { background-color: #b55; border-color: #c66; }
+        /* Advanced Controls Styles */
         #advancedControls { background-color: rgba(30, 30, 30, 0.8); border-top: 1px solid #333; padding: 0 15px 8px 15px; display: block; /* Keep block for details element */ }
         #advancedControls details { color: #ccc; border: 1px solid #444; border-radius: 4px; background-color: rgba(40, 40, 40, 0.5); /* Add background to details content */ }
         #advancedControls summary { cursor: pointer; padding: 5px 10px; background-color: rgba(60, 60, 60, 0.5); border-radius: 4px; outline: none; font-weight: bold; margin-bottom: 0; /* Remove margin */ display: list-item; /* Ensures marker shows */ list-style: none; /* Hide default marker if needed later */ }
@@ -39,21 +91,11 @@
         .details-content-wrapper { padding: 10px; /* Add padding to the content area */ display: flex; flex-direction: column; gap: 15px; /* Space between sections */ }
         .param-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px; /* Removed padding, handled by wrapper */ }
         .param-control { display: flex; flex-direction: column; gap: 3px; } .param-control label { font-size: 0.75em; color: #bbb; display: flex; justify-content: space-between; align-items: center; }
-        /* Updated styles for non-range inputs in param-control */
-        .param-control input[type="number"], .param-control input[type="text"] {
-             width: 100%;
-             border: 1px solid #555;
-             border-radius: 3px;
-             color: #eee;
-             padding: 2px 4px; /* Keep padding for text/number */
-             font-size: 0.8em;
-             background-color: #252525; /* Keep background for text/number */
-        }
+        .param-control input[type="number"], .param-control input[type="text"] { width: 100%; border: 1px solid #555; border-radius: 3px; color: #eee; padding: 2px 4px; font-size: 0.8em; background-color: #252525; }
         .param-control input[type="number"] { -moz-appearance: textfield; }
         .param-control input::-webkit-outer-spin-button, .param-control input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
         .param-value { font-weight: bold; color: #fff; margin-left: 4px; }
-
-        /* --- Custom Range Slider Styles (Cream/Silver Theme) --- */
+        /* Range Slider Styles */
         input[type="range"] { -webkit-appearance: none; appearance: none; width: 100%; height: 18px; background: transparent; cursor: pointer; margin: 5px 0; }
         input[type="range"]:focus { outline: none; }
         input[type="range"]::-webkit-slider-runnable-track { width: 100%; height: 8px; cursor: pointer; background-image: linear-gradient(to bottom, #666, #4a4a4a); border-radius: 4px; border: 1px solid #2a2a2a; box-shadow: inset 0 1px 1px rgba(0,0,0,0.5), inset 0 1px 0px rgba(255,255,255,0.08); }
@@ -64,14 +106,15 @@
         input[type="range"]::-moz-range-thumb { height: 16px; width: 16px; border-radius: 50%; background-image: linear-gradient(to bottom, #ddd, #aaa); border: 1px solid #888; cursor: pointer; box-shadow: 0 1px 2px rgba(0,0,0,0.3), inset 0 0 1px rgba(255,255,255,0.5), inset 0 1px 1px rgba(0,0,0,0.1); transition: background-image 0.1s ease, box-shadow 0.1s ease; }
         input[type="range"]::-moz-range-thumb:hover { background-image: linear-gradient(to bottom, #eee, #bbb); box-shadow: 0 1px 3px rgba(0,0,0,0.4), inset 0 0 1px rgba(255,255,255,0.6), inset 0 1px 1px rgba(0,0,0,0.15); }
         input[type="range"]::-moz-range-thumb:active { background-image: linear-gradient(to top, #ddd, #aaa); box-shadow: inset 0 1px 3px rgba(0,0,0,0.4); }
-        /* --- End Custom Range Slider Styles --- */
-
-        .param-buttons button { font-size: 0.8em; padding: 3px 8px; } /* Style for potential future buttons */
-        .moved-controls-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, max-content)); /* Adjust minmax for better fit */ gap: 6px 8px; align-items: center; justify-content: start; /* Align items to the start */ }
-        .moved-controls-grid .control-item { width: auto; /* Let grid determine width */ }
-        /* Context Indicator removed, no styles needed */
-
-        /* Info Button and Tooltip Styles */
+        /* Moved Controls Grid */
+        .moved-controls-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 6px 8px;
+            align-items: center;
+            justify-content: start;
+        }
+        /* Info Button */
         .info-button { display: inline-flex; align-items: center; justify-content: center; width: 16px; height: 16px; font-size: 10px; line-height: 1; border-radius: 50%; border: 1px solid #666; background-color: rgba(80, 80, 80, 0.5); color: #bbb; cursor: pointer; margin-left: 4px; margin-right: auto; padding: 0; vertical-align: middle; transition: background-color 0.2s, border-color 0.2s; flex-shrink: 0; }
         .info-button:hover { background-color: rgba(100, 100, 100, 0.7); border-color: #888; }
         .info-button:active { background-color: rgba(120, 120, 120, 0.8); }
@@ -79,11 +122,26 @@
         #paramInfoTooltip strong { color: #fff; font-weight: bold; display: block; margin-top: 4px; }
         #paramInfoTooltip strong:first-child { margin-top: 0; }
         #paramInfoTooltip code { background-color: rgba(0,0,0,0.3); padding: 1px 3px; border-radius: 3px; font-family: Consolas, Monaco, monospace; font-size: 0.9em; }
-        /* End Info Button Styles */
-        #deletePresetButton { background-color: #a44; border-color: #c66; font-weight: normal; } #deletePresetButton:hover { background-color: #c66; border-color: #e88; }
+        /* Other Specific Button Styles */
+        #deletePresetButton { background-color: #a44; border-color: #c66; } #deletePresetButton:hover { background-color: #c66; border-color: #e88; }
         #regenerateButton { display: none; }
         #modelInfoBody pre { max-height: 60vh; overflow-y: auto; } #modelInfoBody textarea { background-color: #111; color: #ccc; border: 1px solid #444; } #deleteModelButton { margin-left: auto; background-color: #a44; border-color: #c66; } #deleteModelButton:hover { background-color: #c66; border-color: #e88; }
         #systemInfo { position: absolute; bottom: 5px; left: 10px; font-size: 10px; color: #666; transition: opacity 0.8s ease-out; opacity: 1; z-index: 1; }
+        /* Ensure icon-only buttons are centered and have minimum size */
+        #modelInfoButton, #systemPromptButton, #savePresetButton, #deletePresetButton,
+        #importPresetsButton, #exportPresetsButton, #clearChatButton, #clearContextButton,
+        #regenerateButton, #resetParamsButton, #toggleSnippetsButton, #playPauseButton { /* Added #playPauseButton here */
+            justify-content: center;
+            min-width: 35px; /* Ensure minimum width for touch targets */
+            padding: 0 6px; /* Adjust padding for icon-only */
+            /* width: 35px; /* Optionally set fixed width if preferred */
+        }
+        /* Ensure text buttons have enough space */
+        #ttsToggleButton { min-width: 75px; }
+        select#modelSelector { min-width: 100px; }
+        select#modeSelector { min-width: 100px; }
+        select#voiceSelector { min-width: 100px; }
+        select#presetSelector { min-width: 100px; }
     </style>
 </head>
 <body>
@@ -129,13 +187,16 @@
 
                          <hr style="border: none; border-top: 1px solid #444; margin: 10px 0;">
 
-                         <!-- START: Reordered Controls Grid -->
+                         <!-- START: Reordered Controls Grid with Feather Icons -->
                          <div class="moved-controls-grid" id="mainControlsGrid">
                              <!-- Controls in specified order -->
                              <select id="modelSelector" class="control-item" title="Select Model"></select>
-                             <button id="modelInfoButton" class="control-item" title="Show Model Info">ℹ️</button>
+                             <button id="modelInfoButton" class="control-item" title="Show Model Info">
+                                 <i data-feather="info"></i>
+                             </button>
 
                              <select id="modeSelector" class="control-item" title="Select Personality Mode">
+                                 <!-- Options will be populated by JS -->
                                  <option value="default">Default Mode</option>
                                  <option value="coder">Coder</option>
                                  <option value="business">Business</option>
@@ -143,26 +204,57 @@
                                  <option value="wizard">Wizard</option>
                                  <option value="custom" disabled hidden>Custom</option>
                              </select>
-                             <button id="systemPromptButton" class="control-item" title="Edit System Prompt">Sys</button>
+                             <button id="systemPromptButton" class="control-item" title="Edit System Prompt">
+                                 <i data-feather="cpu"></i>
+                             </button>
 
-                             <select id="voiceSelector" class="control-item" title="Select Voice"></select>
-                             <button id="ttsToggleButton" class="control-item" title="Enable/Disable Speech Output">TTS Off</button>
+                             <select id="voiceSelector" class="control-item" title="Select Voice">
+                                 <!-- Options populated by JS -->
+                             </select>
+                             <button id="ttsToggleButton" class="control-item" title="Enable/Disable Speech Output">
+                                 <i data-feather="volume-x" id="ttsIcon"></i> <!-- Start muted -->
+                                 <span id="ttsLabel">TTS Off</span>
+                             </button>
 
-                             <button id="playPauseButton" class="control-item paused" title="Play/Pause Speech"></button>
+                             <button id="playPauseButton" class="control-item paused" title="Play Speech">
+                                 <i data-feather="play" id="playPauseIcon"></i>
+                             </button>
+
                              <button id="fastForwardButton" class="control-item" title="Cycle Speech Rate">⏩︎<span class="rate-display">1.0x</span></button>
 
-                             <select id="presetSelector" class="control-item" title="Load Preset"><option value="">Load Preset...</option></select>
-                             <button id="savePresetButton" class="control-item" title="Save Current Settings as Preset">💾</button>
-                             <button id="deletePresetButton" class="control-item" title="Delete Selected Preset" disabled>🗑️</button>
-                             <button id="exportPresetsButton" class="control-item" title="Export All Presets">📤</button>
-                             <button id="importPresetsButton" class="control-item" title="Import Presets">📥</button>
+                             <select id="presetSelector" class="control-item" title="Load Preset">
+                                 <option value="">Load Preset...</option>
+                                 <!-- Options populated by JS -->
+                             </select>
+                             <button id="savePresetButton" class="control-item" title="Save Current Settings as Preset">
+                                 <i data-feather="save"></i>
+                             </button>
+                             <button id="deletePresetButton" class="control-item" title="Delete Selected Preset" disabled>
+                                 <i data-feather="trash-2"></i>
+                             </button>
+                             <button id="importPresetsButton" class="control-item" title="Import Presets">
+                                 <i data-feather="download"></i>
+                             </button>
                              <input type="file" id="importPresetsInput" accept=".json" style="display: none;">
+                             <button id="exportPresetsButton" class="control-item" title="Export All Presets">
+                                 <i data-feather="upload"></i>
+                             </button>
 
-                             <button id="clearChatButton" class="control-item" title="Clear Chat History">C</button>
-                             <button id="clearContextButton" class="control-item" title="Clear Context (Keep History)">C<sub>ctx</sub></button>
-                             <button id="regenerateButton" class="control-item" title="Regenerate Last Response">🔄</button>
-                             <button id="resetParamsButton" class="control-item" title="Reset Parameters to Default">Reset</button>
-                             <button id="toggleSnippetsButton" class="control-item" title="Show/Hide Saved Snippets">📑</button>
+                             <button id="clearChatButton" class="control-item" title="Clear Chat History">
+                                 <i data-feather="file-minus"></i>
+                             </button>
+                             <button id="clearContextButton" class="control-item" title="Clear Context (Keep History)">
+                                 <i data-feather="zap-off"></i>
+                             </button>
+                             <button id="regenerateButton" class="control-item" title="Regenerate Last Response">
+                                 <i data-feather="refresh-cw"></i>
+                             </button>
+                             <button id="resetParamsButton" class="control-item" title="Reset Parameters to Default">
+                                 <i data-feather="settings"></i>
+                             </button>
+                             <button id="toggleSnippetsButton" class="control-item" title="Show/Hide Saved Snippets">
+                                 <i data-feather="clipboard"></i>
+                             </button>
 
                          </div>
                          <!-- END: Reordered Controls Grid -->
@@ -191,20 +283,23 @@
             const getElem = (id, required = true) => { const elem = document.getElementById(id); if (required && !elem) { console.error(`Essential element missing: #${id}`); throw new Error(`Essential element missing: #${id}`); } return elem; };
             const bgCanvas = getElem('particleCanvas', false); const orbCanvas = getElem('orbParticleCanvas'); const orbShapeDiv = getElem('orbShapeDiv'); const questionInput = getElem('questionInput'); const inputArea = getElem('inputArea'); const chatDisplayArea = getElem('chatDisplayArea'); const systemInfo = getElem('systemInfo'); const modelSelector = getElem('modelSelector'); const voiceSelector = getElem('voiceSelector');
             const ttsToggleButton = getElem('ttsToggleButton');
+            const ttsIcon = getElem('ttsIcon');
+            const ttsLabel = getElem('ttsLabel');
             const clearChatButton = getElem('clearChatButton'); const stopGeneratingButton = getElem('stopGeneratingButton');
-            const playPauseButton = getElem('playPauseButton'); const fastForwardButton = getElem('fastForwardButton'); const ffRateDisplay = fastForwardButton?.querySelector('.rate-display'); const toggleSnippetsButton = getElem('toggleSnippetsButton'); const snippetsPanel = getElem('snippetsPanel'); const snippetsList = getElem('snippetsList'); const codeEditorModal = getElem('codeEditorModal'); const modalCodeTextarea = getElem('modalCodeTextarea'); const modalLanguageLabel = getElem('modalLanguageLabel'); const modalSaveButton = getElem('modalSaveButton'); const modalCancelButton = getElem('modalCancelButton'); const modalCloseButton = getElem('modalCloseButton'); const systemPromptButton = getElem('systemPromptButton'); const systemPromptModal = getElem('systemPromptModal'); const systemPromptTextarea = getElem('systemPromptTextarea'); const systemPromptSaveButton = getElem('systemPromptSaveButton'); const systemPromptCancelButton = getElem('systemPromptCancelButton'); const systemPromptCloseButton = getElem('systemPromptCloseButton'); const advancedControlsDiv = getElem('advancedControls'); const advancedControlsGrid = advancedControlsDiv?.querySelector('.param-grid');
+            const playPauseButton = getElem('playPauseButton');
+            const playPauseIcon = getElem('playPauseIcon'); // Reference the icon inside the button
+            const fastForwardButton = getElem('fastForwardButton'); const ffRateDisplay = fastForwardButton?.querySelector('.rate-display'); const toggleSnippetsButton = getElem('toggleSnippetsButton'); const snippetsPanel = getElem('snippetsPanel'); const snippetsList = getElem('snippetsList'); const codeEditorModal = getElem('codeEditorModal'); const modalCodeTextarea = getElem('modalCodeTextarea'); const modalLanguageLabel = getElem('modalLanguageLabel'); const modalSaveButton = getElem('modalSaveButton'); const modalCancelButton = getElem('modalCancelButton'); const modalCloseButton = getElem('modalCloseButton'); const systemPromptButton = getElem('systemPromptButton'); const systemPromptModal = getElem('systemPromptModal'); const systemPromptTextarea = getElem('systemPromptTextarea'); const systemPromptSaveButton = getElem('systemPromptSaveButton'); const systemPromptCancelButton = getElem('systemPromptCancelButton'); const systemPromptCloseButton = getElem('systemPromptCloseButton'); const advancedControlsDiv = getElem('advancedControls'); const advancedControlsGrid = advancedControlsDiv?.querySelector('.param-grid');
             const temperatureControl = getElem('temperatureControl', false); const temperatureValue = getElem('temperatureValue', false); const topPControl = getElem('topPControl', false); const topPValue = getElem('topPValue', false); const topKControl = getElem('topKControl', false); const topKValue = getElem('topKValue', false); const repeatPenaltyControl = getElem('repeatPenaltyControl', false); const repeatPenaltyValue = getElem('repeatPenaltyValue', false); const seedControl = getElem('seedControl', false); const seedValue = getElem('seedValue', false); const numCtxControl = getElem('numCtxControl', false); const numCtxValue = getElem('numCtxValue', false); const stopControl = getElem('stopControl', false); const resetParamsButton = getElem('resetParamsButton', false); const regenerateButton = getElem('regenerateButton'); const modelInfoButton = getElem('modelInfoButton'); const modelInfoModal = getElem('modelInfoModal'); const modelInfoTitle = getElem('modelInfoTitle'); const modelInfoBody = getElem('modelInfoBody'); const modelInfoOkButton = getElem('modelInfoOkButton'); const modelInfoCloseButton = getElem('modelInfoCloseButton'); const deleteModelButton = getElem('deleteModelButton'); const presetSelector = getElem('presetSelector'); const savePresetButton = getElem('savePresetButton'); const deletePresetButton = getElem('deletePresetButton'); const exportPresetsButton = getElem('exportPresetsButton'); const importPresetsButton = getElem('importPresetsButton'); const importPresetsInput = getElem('importPresetsInput');
-            /* Context Indicator Removed */ const clearContextButton = getElem('clearContextButton'); const modeSelector = getElem('modeSelector');
+            const clearContextButton = getElem('clearContextButton'); const modeSelector = getElem('modeSelector');
 
             const bgCtx = bgCanvas ? bgCanvas.getContext('2d') : null; const orbCtx = orbCanvas ? orbCanvas.getContext('2d') : null; if (!bgCtx && bgCanvas) console.warn("BG ctx failed."); if (!orbCtx) console.warn("Orb ctx failed."); let bgAnimationFrameId = null; let orbAnimationFrameId = null; let isShaking = false; // State for thinking animation
             let isSpeaking = false; // State for TTS/wave animation
             let targetOrbHue = Math.random() * 360;
             let thinkingFlag = false; let isGeneratingStream = false; let globalBgHue = Math.random() * 360; let chatHistory = []; let thinkingMessageElement = null; let currentAbortController = null; let isTtsEnabled = false; let selectedModel = ''; let availableVoices = []; let selectedVoice = null; let MAX_CONTEXT_TURNS = 3; let currentUtterance = null; const ttsRates = [1.0, 1.5, 2.0]; let currentRateIndex = 0; const SNIPPETS_STORAGE_KEY = 'orbiSavedSnippets_v1'; const SETTINGS_STORAGE_KEY = 'orbiSettings_v1'; const PRESET_STORAGE_KEY = 'orbiPresets_v1'; let resizeTimeout = null; let bgParticlesArray = []; let orbParticlesArray = []; let currentEditingCodeBlockElement = null; let currentSystemPrompt = ""; let generationParams = {}; let lastSubmission = { prompt: null, context: null, model: null, options: null }; let presets = []; let selectedMode = 'default';
             let paramInfoTooltip = null; let currentInfoButton = null;
-            let lastBlinkTime = 0; // Keep blink logic for particle idle/thinking states
+            let lastBlinkTime = 0;
             const BLINK_INTERVAL = 3000 + Math.random() * 4000; const BLINK_DURATION = 150;
 
-            // --- Face Structure Data (Only for initial particle distribution and Z-depth) ---
             const faceCenter = { x: 0, y: 0 };
             const faceLandmarks = { /* ... Landmark data remains the same ... */
                  foreheadTop:     { x: 0, y: -32, z: -0.3 }, foreheadMid:     { x: 0, y: -30, z: -0.2 }, foreheadLeft:    { x: -15, y: -28, z: -0.4 }, foreheadRight:   { x: 15, y: -28, z: -0.4 },
@@ -218,43 +313,87 @@
                  lowerLipLeft:    { x: -8, y: 24, z: 0.7 }, lowerLipRight:   { x: 8, y: 24, z: 0.7 }, lowerLipCenter:  { x: 0, y: 25, z: 0.8 },
                  jawLeft:         { x: -22, y: 18, z: -0.5 }, jawMidLeft:      { x: -15, y: 26, z: -0.2 }, chin:            { x: 0, y: 32, z: 0.6 }, jawMidRight:     { x: 15, y: 26, z: -0.2 }, jawRight:        { x: 22, y: 18, z: -0.5 },
              };
-             // Initialize these later in setupOrbCanvas
              let EYE_CENTER_LEFT_X = 0, EYE_CENTER_LEFT_Y = 0, EYE_CENTER_RIGHT_X = 0, EYE_CENTER_RIGHT_Y = 0, MOUTH_CENTER_X = 0, MOUTH_CENTER_Y = 0;
 
-            const orbNumberOfParticles = 2500; // Can increase this for a denser wave
-            // Wave parameters - Adjusted for smoother "ocean" look
-            const WAVE_AMPLITUDE_BASE = 22; // Max vertical displacement (Increased)
-            const WAVE_FREQUENCY_X = 0.05; // How quickly wave changes along X axis (Lower for broader waves)
-            const WAVE_SPEED = 0.0035; // How fast the wave pattern moves overall (Slower)
-            const WAVE_ATTRACTION_MULT = 2.0; // Stronger pull to the wave form
-            const WAVE_JITTER_MULT = 0.3; // Reduced jitter for smoothness
+            const orbNumberOfParticles = 1000;
+            const WAVE_AMPLITUDE_BASE = 22;
+            const WAVE_FREQUENCY_X = 0.05;
+            const WAVE_SPEED = 0.0035;
+            const WAVE_ATTRACTION_MULT = 2.0;
+            const WAVE_JITTER_MULT = 0.3;
 
             const ICONS = { play: `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>`, saveSnippet: `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>`, edit: `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>`, explain: `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>`, refactor: `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>`, use: `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"></line><polyline points="5 12 12 5 19 12"></polyline></svg>`, copy: `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>`, copied: `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>`, saved: `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>`, bug: `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 9V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v3"></path><path d="M1 11h22"></path><path d="m13 22 8-9"></path><path d="M18 13v5a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2v-5"></path><path d="m4 13-3 9"></path></svg>`, optimize: `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg>`, document: `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>` };
-            const MODE_PROMPTS = { default: "You are Orbi, a helpful and friendly AI assistant. Respond clearly and concisely. Ask clarifying questions if needed. **Respond ONLY in English.**", coder: `You are an "AI technical coding consultant expert", my personal technical advisor.\nYour primary goal is to help me brainstorm, strategize, and execute coding tasks efficiently and effectively.\n- Focus on actionable coding steps and provide accurate, efficient, secure code examples.\n- Prioritize clarity and conciseness in code and explanations.\n- Ask clarifying questions about my coding projects and goals.\n- Analyze my requests based on sound software engineering principles, efficiency, and technical correctness.\n- Refer back to previous code or project details I've given you within this session.\n- Feel free to question my technical assumptions or suggest better coding approaches constructively. Format code using markdown code blocks.\n- **Respond ONLY in English.**`, business: `You are an "AI technical business consultant", my personal technical advisor.\nYour primary goal is to help me brainstorm, strategize, and execute business tasks with a technical focus efficiently and effectively.\n- Focus on actionable business steps with technical implications.\n- Prioritize clarity, conciseness, cost-effectiveness, and market viability.\n- Ask clarifying questions about my business projects and goals.\n- Analyze my requests based on standard business principles combined with finding the most efficient, free/low-cost, technically correct solutions that work.\n- Refer back to previous business information or project details I've given you within this session.\n- Feel free to question my business assumptions or suggest better methods constructively to ensure robust planning.\n- **Respond ONLY in English.**`, creative: `You are an "AI technical creative consultant", my personal technical advisor.\nYour primary goal is to help me brainstorm innovative technical and creative ideas efficiently and effectively.\n- Focus on actionable steps for creative technical projects.\n- Prioritize clarity, novelty and conciseness.\n- Ask clarifying questions to ensure you understand my creative projects and goals.\n- Analyze my requests based on creative potential + most efficient, free cost, technically correct solution which works\n- Refer back to previous information I've given you within this session about my projects, tailor to those projects\n- Feel free to question or provide better, more imaginative answers concisely or methods constructively to ensure robust planning. Think outside the box!\n- **Respond ONLY in English.**`, wizard: `WIZARD MODE: Execute the request directly and concisely. OMIT all conversational filler, introductions, summaries, apologies, and self-references (e.g., "Certainly!", "Here is...", "I will...", "As requested..."). Provide ONLY the requested output (e.g., code block, list, answer). Format any generated code strictly using standard markdown code blocks like \`\`\`language\ncode here\n\`\`\`. Ask questions ONLY if critically necessary for execution. BE DIRECT.\n- **Respond ONLY in English.**`, custom: "" };
+            const MODE_PROMPTS = {
+                default: "You are Orbi, a helpful and friendly AI assistant. Respond clearly and concisely. Ask clarifying questions if needed. **Respond ONLY in English.**",
+                coder: `You are an "AI technical coding consultant expert", my personal technical advisor.\nYour primary goal is to help me brainstorm, strategize, and execute coding tasks efficiently and effectively.\n- Focus on actionable coding steps and provide accurate, efficient, secure code examples.\n- Prioritize clarity and conciseness in code and explanations.\n- Ask clarifying questions about my coding projects and goals.\n- Analyze my requests based on sound software engineering principles, efficiency, and technical correctness.\n- Refer back to previous code or project details I've given you within this session.\n- Feel free to question my technical assumptions or suggest better coding approaches constructively. Format code using markdown code blocks.\n- **Respond ONLY in English.**`,
+                business: `You are an "AI technical business consultant", my personal technical advisor.\nYour primary goal is to help me brainstorm, strategize, and execute business tasks with a technical focus efficiently and effectively.\n- Focus on actionable business steps with technical implications.\n- Prioritize clarity, conciseness, cost-effectiveness, and market viability.\n- Ask clarifying questions about my business projects and goals.\n- Analyze my requests based on standard business principles combined with finding the most efficient, free/low-cost, technically correct solutions that work.\n- Refer back to previous business information or project details I've given you within this session.\n- Feel free to question my business assumptions or suggest better methods constructively to ensure robust planning.\n- **Respond ONLY in English.**`,
+                creative: `You are an "AI technical creative consultant", my personal technical advisor.\nYour primary goal is to help me brainstorm innovative technical and creative ideas efficiently and effectively.\n- Focus on actionable steps for creative technical projects.\n- Prioritize clarity, novelty and conciseness.\n- Ask clarifying questions to ensure you understand my creative projects and goals.\n- Analyze my requests based on creative potential + most efficient, free cost, technically correct solution which works\n- Refer back to previous information I've given you within this session about my projects, tailor to those projects\n- Feel free to question or provide better, more imaginative answers concisely or methods constructively to ensure robust planning. Think outside the box!\n- **Respond ONLY in English.**`,
+                wizard: `WIZARD MODE: Execute the request with extreme conciseness. OMIT all conversational filler, introductions, summaries, apologies, and self-references. Do NOT use lead-in phrases before the output (e.g., avoid "Here is the code:", "The solution is:"). Provide ONLY the core output (e.g., code block, list, direct answer). If explanation is unavoidable for understanding the core output, keep it absolutely minimal and directly related (prefer code comments if applicable). Otherwise, provide NO explanation. Format code strictly using markdown blocks (\`\`\`lang...\`\`\`). Ask questions ONLY if critically necessary for execution. BE DIRECT. Respond ONLY in English.`,
+                custom: ""
+            };
             const PARAM_INFO_TEXT = { temperature: `<strong>What:</strong> Controls randomness. Higher values (e.g., 1.1) increase diversity/creativity, lower values (e.g., 0.7) make output more focused/deterministic.<br><strong>Does:</strong> Scales the probabilities of potential next words before picking one.<br><strong>Range:</strong> 0.0 to 2.0. Default: 1.0.`, top_p: `<strong>What:</strong> Nucleus Sampling. Considers only the most likely words whose combined probability exceeds P.<br><strong>Does:</strong> Prevents picking very unlikely words. Lower values (e.g., 0.9) are more restrictive. 1.0 disables it.<br><strong>Range:</strong> 0.0 to 1.0. Default: 0.9.`, top_k: `<strong>What:</strong> Limits word selection to the K most likely words.<br><strong>Does:</strong> Directly restricts the pool of choices. 0 disables it. Often used as an alternative to Top P.<br><strong>Range:</strong> 0 (disabled) upwards. Common: 40. Default: 40.`, repeat_penalty: `<strong>What:</strong> Penalizes words based on how recently they appeared.<br><strong>Does:</strong> Reduces repetition. Higher values (e.g., 1.2) apply stronger penalties.<br><strong>Range:</strong> 1.0 (no penalty) up to ~2.0. Default: 1.1.`, seed: `<strong>What:</strong> Random seed for generation.<br><strong>Does:</strong> Using the same seed (and other parameters) produces the same output again.<br><strong>Example:</strong> <code>0</code> = Random (default). <code>123</code> = Reproducible run.`, num_ctx: `<strong>What:</strong> Context Window Size (in tokens/words).<br><strong>Does:</strong> Sets how much past conversation and prompt text the model considers. Larger values need more memory/compute.<br><strong>Example:</strong> <code>0</code> = Model's default. <code>2048</code>, <code>4096</code> typical.`, stop: `<strong>What:</strong> Stop Sequences. Text strings that immediately halt generation.<br><strong>Does:</strong> Prevents the model generating past a certain point (e.g., simulating another user turn). Comma-separated.<br><strong>Example:</strong> <code>User:</code>,<code>###</code>` };
 
             // --- Core Functions (TTS, UI, API, etc.) ---
-            function resetTtsControls() { currentUtterance = null; if (playPauseButton) { playPauseButton.classList.remove('playing'); playPauseButton.classList.add('paused'); playPauseButton.title = 'Play Speech'; } hideTtsControls(); }
-            function speakText(text, isCodeBlock = false, callingButton = null) { if (!('speechSynthesis' in window)) { console.warn("Speech Synthesis not supported."); if (callingButton) flashButtonState(callingButton, 'error', 'play'); return; } if (!isTtsEnabled && !isCodeBlock) { console.log("General TTS disabled."); return; } if (!selectedVoice && voiceSelector.value !== 'default') { console.warn("TTS voice not selected or available, using default."); } try { let speakableText = text; if (!isCodeBlock) { const codeBlockRegex = /^```(\w*)\n([\s\S]*?)\n```$/gm; speakableText = speakableText.replace(codeBlockRegex, '\n(Code block omitted)\n'); speakableText = speakableText.replace(/[*#`_~]/g, ' ').replace(/\s+/g, ' ').trim(); } else { speakableText = speakableText.trim(); } if (speakableText.length === 0) { console.log("No speakable text found."); if (callingButton) flashButtonState(callingButton, 'error', 'play'); return; } window.speechSynthesis.cancel(); // Cancel *any* ongoing speech before starting new
+            function resetTtsControls() {
+                currentUtterance = null;
+                if (playPauseButton) {
+                    playPauseButton.classList.remove('playing');
+                    playPauseButton.classList.remove('tts-playing'); // ** Remove playing color class **
+                    playPauseButton.classList.add('paused');
+                    playPauseButton.title = 'Play Speech';
+                    if (playPauseIcon) playPauseIcon.setAttribute('data-feather', 'play'); // Set icon to play
+                }
+                hideTtsControls();
+                if (playPauseIcon && typeof feather !== 'undefined') feather.replace({ 'stroke-width': 1.8, width: 14, height: 14 });
+             }
+            function speakText(text, isCodeBlock = false, callingButton = null) { if (!('speechSynthesis' in window)) { console.warn("Speech Synthesis not supported."); if (callingButton) flashButtonState(callingButton, 'error', 'play'); return; } if (!isTtsEnabled && !isCodeBlock) { console.log("General TTS disabled."); return; } if (!selectedVoice && voiceSelector.value !== 'default') { console.warn("TTS voice not selected or available, using default."); } try { let speakableText = text; if (!isCodeBlock) { const codeBlockRegex = /^```(\w*)\n([\s\S]*?)\n```$/gm; speakableText = speakableText.replace(codeBlockRegex, '\n(Code block omitted)\n'); speakableText = speakableText.replace(/[*#`_~]/g, ' ').replace(/\s+/g, ' ').trim(); } else { speakableText = speakableText.trim(); } if (speakableText.length === 0) { console.log("No speakable text found."); if (callingButton) flashButtonState(callingButton, 'error', 'play'); return; } window.speechSynthesis.cancel();
 
-                 // isShaking = false; // CHANGE: Removed - Don't stop shaking when TTS starts
-                 isSpeaking = false; // Reset immediately, will be set true by onstart
-                 // --- Button feedback ---
-                 document.querySelectorAll('.code-block-button.playing-tts').forEach(btn => btn.classList.remove('playing-tts')); if (callingButton) { callingButton.classList.add('playing-tts'); } // --- End button feedback ---
+                 isSpeaking = false;
+                 document.querySelectorAll('.code-block-button.playing-tts').forEach(btn => btn.classList.remove('playing-tts')); if (callingButton) { callingButton.classList.add('playing-tts'); }
                  currentUtterance = new SpeechSynthesisUtterance(speakableText); let utterance = currentUtterance; utterance.lang = selectedVoice?.lang || 'en-US'; utterance.rate = ttsRates[currentRateIndex]; utterance.pitch = 1.0; if (selectedVoice) { utterance.voice = selectedVoice; } else { const defaultVoice = availableVoices.find(v => v.default && v.lang.startsWith('en-')) || availableVoices.find(v => v.lang.startsWith('en-')); if (defaultVoice) utterance.voice = defaultVoice; } utterance.onstart = () => { console.log("TTS started for:", isCodeBlock ? "Code Block" : "Response");
-                      // isShaking = false; // CHANGE: Removed - Already handled above
-                      isSpeaking = true; // Set speaking state (triggers wave animation)
-                      if (!isCodeBlock) { // Only show player controls for main response
-                           showTtsControls(); if (playPauseButton) { playPauseButton.classList.remove('paused'); playPauseButton.classList.add('playing'); playPauseButton.title = 'Pause Speech'; } } }; utterance.onend = () => { console.log("TTS ended for:", isCodeBlock ? "Code Block" : "Response"); if (currentUtterance === utterance) { currentUtterance = null; isSpeaking = false; // Stop wave animation ONLY if this utterance finished
-                           if (!isCodeBlock) { resetTtsControls(); if (!thinkingFlag) { showInputControls(true); } } } if (callingButton) callingButton.classList.remove('playing-tts'); }; utterance.onerror = (event) => { console.error("TTS error:", event.error); if (currentUtterance === utterance) { currentUtterance = null; isSpeaking = false; // Stop wave animation on error
-                           if (!isCodeBlock) { resetTtsControls(); if (!thinkingFlag) { showInputControls(true); } } } if (systemInfo) { systemInfo.textContent = `TTS Error: ${event.error}`; systemInfo.style.opacity = '1'; systemInfo.style.color = 'orange'; setTimeout(() => { if (systemInfo.textContent.startsWith('TTS Error')) systemInfo.style.opacity = '0'; }, 5000); } if (callingButton) { callingButton.classList.remove('playing-tts'); flashButtonState(callingButton, 'error', 'play'); } }; setTimeout(() => { window.speechSynthesis.speak(utterance); }, 50); // Small delay helps ensure cancel works
-                 } catch (e) { console.error("Error in speakText function:", e); isSpeaking = false; // isShaking = false; // CHANGE: Shaking handled by finalize/stop button
+                      isSpeaking = true;
+                      if (!isCodeBlock) {
+                           showTtsControls(); // This will now handle icon and class update
+                      } }; utterance.onend = () => { console.log("TTS ended for:", isCodeBlock ? "Code Block" : "Response"); if (currentUtterance === utterance) { currentUtterance = null; isSpeaking = false;
+                           if (!isCodeBlock) { resetTtsControls(); if (!thinkingFlag) { showInputControls(true); } } } if (callingButton) callingButton.classList.remove('playing-tts'); }; utterance.onerror = (event) => { console.error("TTS error:", event.error); if (currentUtterance === utterance) { currentUtterance = null; isSpeaking = false;
+                           if (!isCodeBlock) { resetTtsControls(); if (!thinkingFlag) { showInputControls(true); } } } if (systemInfo) { systemInfo.textContent = `TTS Error: ${event.error}`; systemInfo.style.opacity = '1'; systemInfo.style.color = 'orange'; setTimeout(() => { if (systemInfo.textContent.startsWith('TTS Error')) systemInfo.style.opacity = '0'; }, 5000); } if (callingButton) { callingButton.classList.remove('playing-tts'); flashButtonState(callingButton, 'error', 'play'); } }; setTimeout(() => { window.speechSynthesis.speak(utterance); }, 50);
+                 } catch (e) { console.error("Error in speakText function:", e); isSpeaking = false;
                       resetTtsControls(); if (!thinkingFlag) { showInputControls(true); } if (callingButton) { callingButton.classList.remove('playing-tts'); flashButtonState(callingButton, 'error', 'play'); } } }
             function populateVoiceList() { if (!('speechSynthesis' in window)) { console.warn("Speech Synthesis not supported, cannot populate voices."); if (voiceSelector) voiceSelector.disabled = true; if (ttsToggleButton) { ttsToggleButton.disabled = true; ttsToggleButton.style.opacity = '0.5'; } return; } try { availableVoices = window.speechSynthesis.getVoices(); if (availableVoices.length === 0) { console.warn("Voice list empty. Retrying soon or waiting for onvoiceschanged."); return; } console.log(`Found ${availableVoices.length} voices.`); const currentVal = voiceSelector.value; voiceSelector.innerHTML = '<option value="default" selected>Default</option>'; const m=/male|david|mark|guy|man|tom|microsoft david/i; const f=/female|zira|susan|hazel|woman|linda|kim|microsoft zira/i; const i=/irvin|microsoft mark/i; let foundSelection = false; availableVoices.forEach((v, x) => { if (v.lang.startsWith('en-') && !i.test(v.name)) { const o=document.createElement('option'); o.value=x; let d=v.name.replace(/\(.*\)/,'').replace('Microsoft ','').replace('Google ','').trim(); if(m.test(v.name))d+=" (M)"; else if(f.test(v.name))d+=" (F)"; o.textContent=d; if (v.name === selectedVoice?.name) { o.selected = true; foundSelection = true; } else if (!selectedVoice && currentVal === x.toString()){ o.selected = true; foundSelection = true; } voiceSelector.appendChild(o); } }); if (!foundSelection && currentVal !== 'default') { const parsedIndex = parseInt(currentVal); if (!isNaN(parsedIndex) && voiceSelector.options[parsedIndex+1]) { voiceSelector.value = currentVal; selectedVoice = availableVoices[parsedIndex]; foundSelection = true; } } if (!foundSelection) { voiceSelector.value = "default"; selectedVoice = null; } else { if (voiceSelector.value !== 'default') { selectedVoice = availableVoices[parseInt(voiceSelector.value)]; } else { selectedVoice = null; } } console.log("Voice list populated. Selected:", selectedVoice?.name || "Default"); } catch(e){ console.error("Error populating voice list:", e); } }
             const bgNumberOfParticles = 70; function setupBgCanvas() { if (!bgCanvas) return false; bgCanvas.width = window.innerWidth; bgCanvas.height = window.innerHeight; return true; } class BgParticle { constructor(){this.x=Math.random()*(bgCanvas?.width||innerWidth);this.y=Math.random()*(bgCanvas?.height||innerHeight);this.size=Math.random()*2+0.5;this.sx=Math.random()*1-0.5;this.sy=Math.random()*1-0.5;this.sat=50+Math.random()*30;this.light=70+Math.random()*20;this.alpha=Math.random()*0.4+0.1;} draw(){if(!bgCtx)return;const hue=globalBgHue;bgCtx.fillStyle=`hsla(${hue}, ${this.sat}%, ${this.light}%, ${this.alpha})`;bgCtx.shadowBlur=4;bgCtx.shadowColor=`hsla(${hue}, ${this.sat}%, ${this.light}%, 0.4)`;bgCtx.beginPath();bgCtx.arc(this.x,this.y,this.size,0,Math.PI*2);bgCtx.fill();bgCtx.shadowBlur=0;} update(){if(!bgCanvas?.width||!bgCanvas?.height)return;this.x+=this.sx;this.y+=this.sy;if(this.x<this.size||this.x>bgCanvas.width-this.size){this.sx*=-1;this.x=Math.max(this.size,Math.min(this.x,bgCanvas.width-this.size));}if(this.y<this.size||this.y>bgCanvas.height-this.size){this.sy*=-1;this.y=Math.max(this.size,Math.min(this.y,bgCanvas.height-this.size));}this.alpha+=(Math.random()-0.5)*0.04;this.alpha=Math.max(0.1,Math.min(this.alpha,0.5));}} function initBgParticles() { if(!bgCanvas || !bgCtx) return; bgParticlesArray=[]; try { for(let i=0; i<bgNumberOfParticles; i++) bgParticlesArray.push(new BgParticle()); } catch(e){ console.error("Error creating BG particles", e); bgParticlesArray = []; } } function animateBgParticles() { if (!bgCtx || bgParticlesArray.length === 0) { bgAnimationFrameId = requestAnimationFrame(animateBgParticles); return; } try { bgCtx.clearRect(0,0,bgCanvas.width,bgCanvas.height); globalBgHue=(globalBgHue+0.5)%360; bgParticlesArray.forEach(p=>{p.update();p.draw();}); } catch(e){ console.error("Error in BG animation loop", e); bgAnimationFrameId = null; return; } bgAnimationFrameId = requestAnimationFrame(animateBgParticles); }
             function showInputControls(show) { try { if (!questionInput || !stopGeneratingButton) return; stopGeneratingButton.style.display = show ? 'none' : 'inline-flex'; questionInput.disabled = !show; } catch (e) { console.error("Error in showInputControls:", e); } }
-            function showTtsControls() { if (isTtsEnabled && playPauseButton && fastForwardButton) { playPauseButton.style.display = 'inline-flex'; fastForwardButton.style.display = 'inline-flex'; if (speechSynthesis.speaking && !speechSynthesis.paused) { playPauseButton.classList.remove('paused'); playPauseButton.classList.add('playing'); playPauseButton.title = 'Pause Speech'; } else { playPauseButton.classList.remove('playing'); playPauseButton.classList.add('paused'); playPauseButton.title = 'Play Speech'; } } }
-            function hideTtsControls() { if (playPauseButton && fastForwardButton) { playPauseButton.style.display = 'none'; fastForwardButton.style.display = 'none'; playPauseButton.classList.remove('playing'); playPauseButton.classList.add('paused'); playPauseButton.title = 'Play Speech'; } }
+            function showTtsControls() { // ** UPDATED **
+                if (isTtsEnabled && playPauseButton && fastForwardButton && playPauseIcon) {
+                    playPauseButton.style.display = 'inline-flex';
+                    fastForwardButton.style.display = 'inline-flex';
+                    if (speechSynthesis.speaking && !speechSynthesis.paused) {
+                        playPauseButton.classList.remove('paused');
+                        playPauseButton.classList.add('playing');
+                        playPauseButton.classList.add('tts-playing'); // Add playing color class
+                        playPauseButton.title = 'Pause Speech';
+                        playPauseIcon.setAttribute('data-feather', 'pause'); // Set icon to pause
+                    } else {
+                        playPauseButton.classList.remove('playing');
+                        playPauseButton.classList.remove('tts-playing'); // Remove playing color class
+                        playPauseButton.classList.add('paused');
+                        playPauseButton.title = 'Play Speech';
+                        playPauseIcon.setAttribute('data-feather', 'play'); // Set icon to play
+                    }
+                    if (typeof feather !== 'undefined') feather.replace({ 'stroke-width': 1.8, width: 14, height: 14 });
+                }
+            }
+            function hideTtsControls() { // ** UPDATED **
+                if (playPauseButton && fastForwardButton && playPauseIcon) {
+                    playPauseButton.style.display = 'none';
+                    fastForwardButton.style.display = 'none';
+                    playPauseButton.classList.remove('playing');
+                    playPauseButton.classList.remove('tts-playing'); // Remove playing color class
+                    playPauseButton.classList.add('paused');
+                    playPauseButton.title = 'Play Speech';
+                    playPauseIcon.setAttribute('data-feather', 'play');
+                     // Don't necessarily need to refresh icons when hiding
+                }
+            }
             function escapeHtml(unsafe) { return typeof unsafe !== 'string' ? unsafe : unsafe.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;"); }
             function scrollToBottom() { try { chatDisplayArea.scrollTop = chatDisplayArea.scrollHeight; } catch(e){} }
             function adjustTextareaHeight() { try { questionInput.style.height = 'auto'; const scrollHeight = questionInput.scrollHeight; const maxHeight = 100; questionInput.style.height = `${Math.min(scrollHeight, maxHeight)}px`; } catch(e) { console.error("Error adjusting textarea height:", e); } }
@@ -278,40 +417,55 @@
             function exportPresets() { try { const presetsToExport = loadPresets(); if (presetsToExport.length === 0) { alert("No presets to export."); return; } const jsonString = JSON.stringify(presetsToExport, null, 2); triggerTextFileDownload(jsonString, 'orbi_presets.json'); } catch(e){ console.error("Error exporting presets:", e); } }
             function triggerImportPresets() { importPresetsInput.click(); }
             function importPresets(event) { const file = event.target.files[0]; if (!file) return; const reader = new FileReader(); reader.onload = (e) => { try { const importedData = JSON.parse(e.target.result); if (!Array.isArray(importedData)) throw new Error("Not a valid preset array."); if (confirm(`Import ${importedData.length} presets? This will overwrite existing presets.`)) { savePresets(importedData); populatePresetSelector(); loadSettings(); alert("Presets imported!"); } } catch (err) { alert(`Failed to import presets: ${err.message}`); console.error("Preset import error:", err); } finally { event.target.value = null; } }; reader.onerror = (e) => { alert("Error reading preset file."); event.target.value = null; }; reader.readAsText(file); }
-            function updateTtsButtonState() { if (!ttsToggleButton) return; if (isTtsEnabled) { ttsToggleButton.textContent = "TTS On"; ttsToggleButton.classList.add('tts-enabled'); ttsToggleButton.title = "TTS Enabled (Click to Disable)"; } else { ttsToggleButton.textContent = "TTS Off"; ttsToggleButton.classList.remove('tts-enabled'); ttsToggleButton.title = "TTS Disabled (Click to Enable)"; } }
+            function updateTtsButtonState() {
+                if (!ttsToggleButton || !ttsIcon || !ttsLabel) return;
+                if (isTtsEnabled) {
+                    ttsIcon.setAttribute('data-feather', 'volume-2');
+                    ttsLabel.textContent = "TTS On";
+                    ttsToggleButton.classList.add('tts-enabled');
+                    ttsToggleButton.title = "TTS Enabled (Click to Disable)";
+                } else {
+                    ttsIcon.setAttribute('data-feather', 'volume-x');
+                    ttsLabel.textContent = "TTS Off";
+                    ttsToggleButton.classList.remove('tts-enabled');
+                    ttsToggleButton.title = "TTS Disabled (Click to Enable)";
+                }
+                if (typeof feather !== 'undefined') {
+                     feather.replace({ 'stroke-width': 1.8, width: 14, height: 14 });
+                }
+            }
             function saveSettings() { try { const settings = { selectedMode: selectedMode, systemPrompt: currentSystemPrompt, params: generationParams, ttsEnabled: isTtsEnabled, selectedVoiceName: selectedVoice?.name || null, selectedModel: selectedModel }; localStorage.setItem(SETTINGS_STORAGE_KEY, JSON.stringify(settings)); } catch (e) { console.error("Failed to save settings:", e); } }
             function loadSettings() { try { const storedSettings = localStorage.getItem(SETTINGS_STORAGE_KEY); let settings = {}; if (storedSettings) { settings = JSON.parse(storedSettings); } selectedMode = settings.selectedMode || 'default'; currentSystemPrompt = (selectedMode === 'custom' && settings.systemPrompt !== undefined) ? settings.systemPrompt : MODE_PROMPTS[selectedMode] || MODE_PROMPTS['default']; generationParams = { ...getDefaultParams(), ...(settings.params || {}) }; isTtsEnabled = settings.ttsEnabled || false;
-                 updateTtsButtonState(); // Update new button state
-                 const savedVoiceName = settings.selectedVoiceName; selectedModel = settings.selectedModel || ''; if (savedVoiceName && availableVoices.length > 0) { const voiceIndex = availableVoices.findIndex(v => v.name === savedVoiceName); if (voiceIndex !== -1) { selectedVoice = availableVoices[voiceIndex]; if(voiceSelector) voiceSelector.value = voiceIndex.toString(); } else { selectedVoice = null; if(voiceSelector) voiceSelector.value = 'default'; } } else { selectedVoice = null; if(voiceSelector) voiceSelector.value = 'default'; } } catch (e) { console.error("Error loading settings, resetting:", e); resetParameters(); currentSystemPrompt = MODE_PROMPTS['default']; selectedMode = 'default'; selectedModel = ''; isTtsEnabled = false; selectedVoice = null; updateTtsButtonState(); } if (modeSelector) { let customOption = modeSelector.querySelector('option[value="custom"]'); if(selectedMode === 'custom') { if (!customOption) { customOption = document.createElement('option'); customOption.value = "custom"; customOption.textContent = "Custom"; modeSelector.appendChild(customOption); } customOption.hidden = false; customOption.disabled = false; modeSelector.value = "custom"; } else { if (customOption && !presets.some(p => p.mode === 'custom')) { customOption.hidden = true; customOption.disabled = true; } modeSelector.value = selectedMode; } } /* Context Indicator Removed */ updateParameterDisplay(); updateModeSelectorTooltip(); }
+                 updateTtsButtonState();
+                 const savedVoiceName = settings.selectedVoiceName; selectedModel = settings.selectedModel || ''; if (savedVoiceName && availableVoices.length > 0) { const voiceIndex = availableVoices.findIndex(v => v.name === savedVoiceName); if (voiceIndex !== -1) { selectedVoice = availableVoices[voiceIndex]; if(voiceSelector) voiceSelector.value = voiceIndex.toString(); } else { selectedVoice = null; if(voiceSelector) voiceSelector.value = 'default'; } } else { selectedVoice = null; if(voiceSelector) voiceSelector.value = 'default'; } } catch (e) { console.error("Error loading settings, resetting:", e); resetParameters(); currentSystemPrompt = MODE_PROMPTS['default']; selectedMode = 'default'; selectedModel = ''; isTtsEnabled = false; selectedVoice = null; updateTtsButtonState(); } if (modeSelector) { let customOption = modeSelector.querySelector('option[value="custom"]'); if(selectedMode === 'custom') { if (!customOption) { customOption = document.createElement('option'); customOption.value = "custom"; customOption.textContent = "Custom"; modeSelector.appendChild(customOption); } customOption.hidden = false; customOption.disabled = false; modeSelector.value = "custom"; } else { if (customOption && !presets.some(p => p.mode === 'custom')) { customOption.hidden = true; customOption.disabled = true; } modeSelector.value = selectedMode; } } updateParameterDisplay(); updateModeSelectorTooltip(); }
             function saveLastSubmission(prompt, context, model, options) { lastSubmission = { prompt, context, model, options: {...options} }; if(regenerateButton) regenerateButton.style.display = 'inline-flex'; }
             function regenerateLastResponse() { if (!lastSubmission.prompt || thinkingFlag) return; window.speechSynthesis.cancel(); resetTtsControls(); const currentOptions = { ...lastSubmission.options }; askQuestionInternal(lastSubmission.prompt, lastSubmission.context, lastSubmission.model, currentOptions); }
-            /* Context Indicator Function Removed */
-            function clearChatContext() { if (thinkingFlag) { alert("Cannot clear context while generating."); return; } chatHistory = []; if(regenerateButton) regenerateButton.style.display = 'none'; lastSubmission = {}; alert("Chat context cleared. Visible history remains."); /* Update Context Indicator Removed */ }
+            function clearChatContext() { if (thinkingFlag) { alert("Cannot clear context while generating."); return; } chatHistory = []; if(regenerateButton) regenerateButton.style.display = 'none'; lastSubmission = {}; alert("Chat context cleared. Visible history remains."); }
             function createParamInfoTooltip() { if (document.getElementById('paramInfoTooltip')) return; paramInfoTooltip = document.createElement('div'); paramInfoTooltip.id = 'paramInfoTooltip'; paramInfoTooltip.style.display = 'none'; document.body.appendChild(paramInfoTooltip); console.log("Param info tooltip created."); document.addEventListener('click', (event) => { if (!paramInfoTooltip || paramInfoTooltip.style.display === 'none') return; const clickedInfoButton = event.target.closest('.info-button'); if (!clickedInfoButton || clickedInfoButton !== currentInfoButton) { hideParamInfoTooltip(); } }, true); }
             function showParamInfoTooltip(button) { if (!paramInfoTooltip) createParamInfoTooltip(); const paramKey = button.dataset.paramInfo; const infoText = PARAM_INFO_TEXT[paramKey]; if (!infoText) { console.warn(`No info text found for param: ${paramKey}`); hideParamInfoTooltip(); return; } if (paramInfoTooltip.style.display === 'block' && button === currentInfoButton) { hideParamInfoTooltip(); return; } paramInfoTooltip.innerHTML = infoText.trim(); const btnRect = button.getBoundingClientRect(); const tooltipRect = paramInfoTooltip.getBoundingClientRect(); let top = btnRect.bottom + window.scrollY + 5; let left = btnRect.left + window.scrollX + (btnRect.width / 2); paramInfoTooltip.style.top = `${top}px`; paramInfoTooltip.style.left = `${left}px`; paramInfoTooltip.style.transform = 'translateX(-50%)'; paramInfoTooltip.style.display = 'block'; currentInfoButton = button; const finalTooltipRect = paramInfoTooltip.getBoundingClientRect(); if (finalTooltipRect.right > window.innerWidth - 10) { paramInfoTooltip.style.left = `${window.innerWidth - (finalTooltipRect.width / 2) - 10}px`; paramInfoTooltip.style.transform = 'translateX(-50%)'; } if (finalTooltipRect.left < 10) { paramInfoTooltip.style.left = `${(finalTooltipRect.width / 2) + 10}px`; paramInfoTooltip.style.transform = 'translateX(-50%)'; } const finalLeft = parseFloat(paramInfoTooltip.style.left); if(finalLeft - finalTooltipRect.width / 2 < 10) { paramInfoTooltip.style.transform = 'translateX(0)'; paramInfoTooltip.style.left = '10px'; } if(finalLeft + finalTooltipRect.width / 2 > window.innerWidth - 10) { paramInfoTooltip.style.transform = 'translateX(-100%)'; paramInfoTooltip.style.left = `${window.innerWidth - 10}px`; } if (finalTooltipRect.bottom > window.innerHeight - 10) { paramInfoTooltip.style.top = `${btnRect.top + window.scrollY - finalTooltipRect.height - 5}px`; } }
             function hideParamInfoTooltip() { if (paramInfoTooltip) { paramInfoTooltip.style.display = 'none'; } currentInfoButton = null; }
             async function askQuestionInternal(question, promptContext, model, options, isAction = false) { if (thinkingFlag) return; window.speechSynthesis.cancel(); resetTtsControls();
-                 isSpeaking = false; // Reset speaking state
-                 isShaking = true; // Start thinking animation (will persist)
-                 thinkingFlag = true; isGeneratingStream = true; questionInput.disabled = true; showInputControls(false); thinkingMessageElement = displayMessage("...", false, true); scrollToBottom(); const ollamaUrl = 'http://localhost:11434/api/generate'; let finalOptions = { ...options }; if(finalOptions.stop && !Array.isArray(finalOptions.stop)) { finalOptions.stop = typeof finalOptions.stop === 'string' ? finalOptions.stop.split(',').map(s=>s.trim()).filter(s=>s) : []; } if(finalOptions.stop && finalOptions.stop.length === 0) { delete finalOptions.stop; } if(finalOptions.num_ctx === 0) delete finalOptions.num_ctx; let systemPromptToSend = currentSystemPrompt || MODE_PROMPTS[selectedMode] || MODE_PROMPTS['default']; const englishInstruction = "Respond ONLY in English."; if (!systemPromptToSend.includes(englishInstruction)) { systemPromptToSend = systemPromptToSend ? `${systemPromptToSend}\n\n${englishInstruction}` : englishInstruction; } const payload = { model: model, prompt: `${promptContext}${isAction ? '' : 'User: '}${question}\n\nOrbi:`, stream: true, options: finalOptions, system: systemPromptToSend }; currentAbortController = new AbortController(); let accumulatedResponse = ""; let finalResponseData = null; let isError = false; try { console.log("Sending request to Ollama:", payload); const response = await fetch(ollamaUrl, { method: 'POST', mode: 'cors', headers: { 'Content-Type': 'application/json', }, body: JSON.stringify(payload), signal: currentAbortController.signal }); if (!response.ok) { isError = true; const errorBody = await response.text(); throw new Error(`Ollama error: ${response.status} ${response.statusText} - ${errorBody}`); } if (!response.body) { isError = true; throw new Error("No response body from Ollama."); } const reader = response.body.getReader(); const decoder = new TextDecoder(); let partialLine = ""; while (true) { const { value, done } = await reader.read(); if (done) { isGeneratingStream = false; console.log("Streaming finished."); break; } const chunk = decoder.decode(value, { stream: true }); const lines = (partialLine + chunk).split('\n'); partialLine = lines.pop() || ""; for (const line of lines) { if (line.trim() === "") continue; try { const parsed = JSON.parse(line); if (parsed.response) { accumulatedResponse += parsed.response; if (thinkingMessageElement) { updateOrbiMessage(thinkingMessageElement, accumulatedResponse); } } if (parsed.done) { isGeneratingStream = false; finalResponseData = parsed; console.log("Ollama response 'done'. Stats:", finalResponseData); } } catch (e) { console.warn("Failed to parse JSON line from stream:", line, e); } } } finalizeOrbiResponse(thinkingMessageElement, accumulatedResponse, question, false, finalResponseData); } catch (error) { isError = true; isGeneratingStream = false; const wasAborted = error.name === 'AbortError'; console.error("Error during Ollama request:", error); let errorMsg = wasAborted ? "Generation stopped by user." : `Error: ${error.message}`; finalizeOrbiResponse(thinkingMessageElement, errorMsg, question, true); // Pass true for error
-                 } finally { thinkingFlag = false; isShaking = false; // CHANGE: Stop shaking only when finally done or stopped
+                 isSpeaking = false;
+                 isShaking = true;
+                 thinkingFlag = true; isGeneratingStream = true; questionInput.disabled = true; showInputControls(false); thinkingMessageElement = displayMessage("...", false, true); scrollToBottom(); const ollamaUrl = 'http://localhost:11434/api/generate'; let finalOptions = { ...options }; if(finalOptions.stop && !Array.isArray(finalOptions.stop)) { finalOptions.stop = typeof finalOptions.stop === 'string' ? finalOptions.stop.split(',').map(s=>s.trim()).filter(s=>s) : []; } if(finalOptions.stop && finalOptions.stop.length === 0) { delete finalOptions.stop; } if(finalOptions.num_ctx === 0) delete finalOptions.num_ctx; let systemPromptToSend = currentSystemPrompt || MODE_PROMPTS[selectedMode] || MODE_PROMPTS['default']; const englishInstruction = "Respond ONLY in English."; if (!systemPromptToSend.includes(englishInstruction)) { systemPromptToSend = systemPromptToSend ? `${systemPromptToSend}\n\n${englishInstruction}` : englishInstruction; } const payload = { model: model, prompt: `${promptContext}${isAction ? '' : 'User: '}${question}\n\nOrbi:`, stream: true, options: finalOptions, system: systemPromptToSend }; currentAbortController = new AbortController(); let accumulatedResponse = ""; let finalResponseData = null; let isError = false; try { console.log("Sending request to Ollama:", payload); const response = await fetch(ollamaUrl, { method: 'POST', mode: 'cors', headers: { 'Content-Type': 'application/json', }, body: JSON.stringify(payload), signal: currentAbortController.signal }); if (!response.ok) { isError = true; const errorBody = await response.text(); throw new Error(`Ollama error: ${response.status} ${response.statusText} - ${errorBody}`); } if (!response.body) { isError = true; throw new Error("No response body from Ollama."); } const reader = response.body.getReader(); const decoder = new TextDecoder(); let partialLine = ""; while (true) { const { value, done } = await reader.read(); if (done) { isGeneratingStream = false; console.log("Streaming finished."); break; } const chunk = decoder.decode(value, { stream: true }); const lines = (partialLine + chunk).split('\n'); partialLine = lines.pop() || ""; for (const line of lines) { if (line.trim() === "") continue; try { const parsed = JSON.parse(line); if (parsed.response) { accumulatedResponse += parsed.response; if (thinkingMessageElement) { updateOrbiMessage(thinkingMessageElement, accumulatedResponse); } } if (parsed.done) { isGeneratingStream = false; finalResponseData = parsed; console.log("Ollama response 'done'. Stats:", finalResponseData); } } catch (e) { console.warn("Failed to parse JSON line from stream:", line, e); } } } finalizeOrbiResponse(thinkingMessageElement, accumulatedResponse, question, false, finalResponseData); } catch (error) { isError = true; isGeneratingStream = false; const wasAborted = error.name === 'AbortError'; console.error("Error during Ollama request:", error); let errorMsg = wasAborted ? "Generation stopped by user." : `Error: ${error.message}`; finalizeOrbiResponse(thinkingMessageElement, errorMsg, question, true);
+                 } finally { thinkingFlag = false; isShaking = false;
                       questionInput.disabled = !selectedModel; currentAbortController = null; thinkingMessageElement = null;
-                      if (!isSpeaking) { // Only enable controls if TTS isn't speaking
+                      if (!isSpeaking) {
                           showInputControls(true);
                       }
                       if (!document.hidden && !questionInput.disabled) { questionInput.focus(); }
                  } }
-            function finalizeOrbiResponse(element, responseText, originalQuestion, isError = false, stats = null) { try { if (element) { updateOrbiMessage(element, responseText); if (!isError && stats && stats.total_duration) { const statsSpan = document.createElement('span'); statsSpan.style.fontSize = '0.7em'; statsSpan.style.color = '#888'; statsSpan.style.display = 'block'; statsSpan.style.marginTop = '5px'; const durationSec = (stats.total_duration / 1e9).toFixed(2); const evalSec = (stats.eval_duration / 1e9).toFixed(2); const tokensPerSec = stats.eval_count && stats.eval_duration ? (stats.eval_count / (stats.eval_duration / 1e9)).toFixed(1) : 'N/A'; statsSpan.textContent = `(Gen: ${evalSec}s, ${stats.eval_count} tk, ${tokensPerSec} t/s | Total: ${durationSec}s)`; element.appendChild(statsSpan); } } else if (!isError) { displayMessage(responseText, false, false, false); } else { displayMessage(responseText, false, false, true); } if (!isError) { chatHistory.push({ question: originalQuestion, answer: responseText, timestamp: new Date(), isError: false }); /* Context Indicator Removed */ if (isTtsEnabled) { console.log("Attempting to speak final response."); speakText(responseText); // speakText now doesn't stop shake
-                         } else { // isShaking = false; // CHANGE: Shaking stopped in finally block
-                              showInputControls(true); } } else { // isShaking = false; // CHANGE: Shaking stopped in finally block
-                      showInputControls(true); } scrollToBottom(); } catch (e) { console.error("Error finalizing Orbi response:", e); isShaking = false; // Ensure shake stops on error here too
+            function finalizeOrbiResponse(element, responseText, originalQuestion, isError = false, stats = null) { try { if (element) { updateOrbiMessage(element, responseText); if (!isError && stats && stats.total_duration) { const statsSpan = document.createElement('span'); statsSpan.style.fontSize = '0.7em'; statsSpan.style.color = '#888'; statsSpan.style.display = 'block'; statsSpan.style.marginTop = '5px'; const durationSec = (stats.total_duration / 1e9).toFixed(2); const evalSec = (stats.eval_duration / 1e9).toFixed(2); const tokensPerSec = stats.eval_count && stats.eval_duration ? (stats.eval_count / (stats.eval_duration / 1e9)).toFixed(1) : 'N/A'; statsSpan.textContent = `(Gen: ${evalSec}s, ${stats.eval_count} tk, ${tokensPerSec} t/s | Total: ${durationSec}s)`; element.appendChild(statsSpan); } } else if (!isError) { displayMessage(responseText, false, false, false); } else { displayMessage(responseText, false, false, true); } if (!isError) { chatHistory.push({ question: originalQuestion, answer: responseText, timestamp: new Date(), isError: false }); if (isTtsEnabled) { console.log("Attempting to speak final response."); speakText(responseText);
+                         } else {
+                              showInputControls(true); } } else {
+                      showInputControls(true); } scrollToBottom(); } catch (e) { console.error("Error finalizing Orbi response:", e); isShaking = false;
                       showInputControls(true); } }
             async function askQuestion() { if (thinkingFlag) return; const question = questionInput.value.trim(); if (!question) { console.log("Empty question input."); return; } if (!selectedModel) { alert("Please select a model first."); return; } let promptContext = ""; try { const relevantHistory = chatHistory.slice(-MAX_CONTEXT_TURNS); if (relevantHistory.length > 0) { promptContext = "This is the conversation history (recent turns):\n"; relevantHistory.forEach(turn => { const q = turn.question.substring(0, 400); const a = turn.answer.substring(0, 800); promptContext += `User: ${q}\nOrbi: ${a}\n`; }); promptContext += "\n---\nContinue the conversation based on this history and the new user input:\n"; } } catch (e) { console.error("Error building context:", e); promptContext = ""; } const currentOptions = { ...generationParams }; displayMessage(question, true); questionInput.value = ''; adjustTextareaHeight(); saveLastSubmission(question, promptContext, selectedModel, currentOptions); askQuestionInternal(question, promptContext, selectedModel, currentOptions, false); }
             async function askActionPrompt(actionPromptText, actionDescription = "Action Request") { if (thinkingFlag) return; if (!selectedModel) { alert("Please select a model first."); return; } let promptContext = ""; try { const relevantHistory = chatHistory.slice(-MAX_CONTEXT_TURNS); if (relevantHistory.length > 0) { promptContext = "Conversation History Context:\n"; relevantHistory.forEach(turn => { const q = turn.question.substring(0, 400); const a = turn.answer.substring(0, 800); promptContext += `User: ${q}\nOrbi: ${a}\n`; }); promptContext += "\n---\nExecute the following action based on the history and the request:\n"; } } catch (e) { console.error("Error building context for action:", e); promptContext = ""; } const currentOptions = { ...generationParams }; if(regenerateButton) regenerateButton.style.display = 'none'; lastSubmission = {}; askQuestionInternal(actionPromptText, promptContext, selectedModel, currentOptions, true); }
 
 
             // --- Orb Particle/Wave Logic ---
-            function setupOrbCanvas() { // Remains the same
+            function setupOrbCanvas() {
                 if (!orbShapeDiv || !orbCanvas) return false;
                 const nw = orbShapeDiv.clientWidth;
                 const nh = orbShapeDiv.clientHeight;
@@ -335,10 +489,12 @@
                 return true;
             }
 
-            class OrbParticle { // Used for Idle, Thinking, AND Speaking Wave states
+            class OrbParticle {
                  constructor() {
                      const r=(orbCanvas?.width || 90)/2; const startX = (orbCanvas?.width || 90) / 2; const startY = (orbCanvas?.height || 90) / 2; const ir=r*(0.1+Math.random()*0.8); const a=Math.random()*Math.PI*2; this.x=startX+Math.cos(a)*ir; this.y=startY+Math.sin(a)*ir;
-                     this.size = Math.random() * 0.45 + 0.18;
+                     // --- ** UPDATED Particle Size ** ---
+                     this.size = Math.random() * 0.8 + 0.2; // Range roughly 0.2 to 1.0
+                     // --- ** END UPDATED Particle Size ** ---
                      this.baseSize = this.size;
                      this.hue = Math.random()*360; this.sat = 65 + Math.random()*30;
                      this.light = 45 + Math.random()*20;
@@ -346,85 +502,71 @@
                      this.baseAlpha = this.alpha;
                      this.speedX = (Math.random()-0.5)*0.5; this.speedY = (Math.random()-0.5)*0.5;
                      this.baseSpeedX = this.speedX; this.baseSpeedY = this.speedY;
-                     this.targetLandmarkKey = null; // Only for initial distribution and Z-depth
-                     this.landmarkZ = 0; // Used for drawing adjustments
-                     this.baseY = this.y; // Store initial Y for wave anchor
+                     this.targetLandmarkKey = null;
+                     this.landmarkZ = 0;
+                     this.baseY = this.y;
                      this.attraction = 0.018 + Math.random() * 0.012;
                      this.damping = 0.93;
                      this.jitterAmount = 0.3;
                  }
 
-                 getBaseTargetPosition() { // Gets the static landmark position for Z info
+                 getBaseTargetPosition() {
                       if (!this.targetLandmarkKey || !faceCenter.x) return { x: faceCenter.x, y: faceCenter.y };
                       try {
                            const targetPosData = faceLandmarks[this.targetLandmarkKey];
                            if (!targetPosData) return { x: faceCenter.x, y: faceCenter.y };
-                           // Not returning coords, just using for init/Z - could be removed if Z isn't used in wave draw
                            return { x: faceCenter.x + targetPosData.x, y: faceCenter.y + targetPosData.y };
                       } catch(e) { return { x: faceCenter.x, y: faceCenter.y }; }
                  }
 
-                 update(time) { // Main logic determining particle behavior based on state
+                 update(time) {
                      if (!orbCanvas?.width || !orbCanvas.height || !faceCenter.x) return;
 
                      try {
                          const now = time || Date.now();
 
-                         if (isSpeaking) { // Mode 1: SPEAKING (Particle Wave)
-                             let currentJitter = this.jitterAmount * WAVE_JITTER_MULT; // Reduced jitter
-
-                             // Calculate wave offset based on CURRENT X and time
+                         if (isSpeaking) { // Mode 1: SPEAKING (Wave)
+                             let currentJitter = this.jitterAmount * WAVE_JITTER_MULT;
+                             const fcx = faceCenter.x;
+                             const fcy = faceCenter.y;
                              const wavePhase = (this.x * WAVE_FREQUENCY_X) + (now * WAVE_SPEED);
                              const waveOffsetY = Math.sin(wavePhase) * WAVE_AMPLITUDE_BASE * (0.8 + Math.sin(now * 0.001) * 0.2);
-
-                             // Target Y is the canvas CENTER + wave offset (forms horizontal wave)
-                             const targetY = faceCenter.y + waveOffsetY;
-                             // Target X: Let particles drift or gently pull to stay within bounds
-                             const targetX = this.x; // No strong horizontal target
-
-                             const dx = targetX - this.x; // Small horizontal difference
-                             const dy = targetY - this.y; // Vertical difference drives wave
-
-                             // Apply Forces: Stronger attraction to the wave point
+                             const targetY = fcy + waveOffsetY;
+                             const targetX = this.x;
+                             const dx = targetX - this.x;
+                             const dy = targetY - this.y;
                              const currentAttraction = this.attraction * WAVE_ATTRACTION_MULT;
-                             this.speedX += dx * currentAttraction * 0.05; // Very weak horizontal pull if any
+                             this.speedX += dx * currentAttraction * 0.05;
                              this.speedY += dy * currentAttraction;
-
-                             // Apply Jitter
                              this.speedX += (Math.random() - 0.5) * currentJitter;
                              this.speedY += (Math.random() - 0.5) * currentJitter;
-
-                             // Apply Damping and Update Position
                              this.speedX *= this.damping; this.speedY *= this.damping;
                              this.x += this.speedX; this.y += this.speedY;
-
-                             // Restore alpha/size (important if transitioning from thinking)
                              if (this.alpha < this.baseAlpha) this.alpha += (this.baseAlpha - this.alpha) * 0.05;
                              if (this.size < this.baseSize) this.size += (this.baseSize - this.size) * 0.05;
-
-                             // Keep particles within horizontal bounds slightly
                              const boundX = orbCanvas.width / 2 - this.size;
-                             if(Math.abs(this.x - faceCenter.x) > boundX) {
-                                 this.x = faceCenter.x + Math.sign(this.x - faceCenter.x) * boundX;
-                                 this.speedX *= -0.5; // Bounce gently
+                             if(Math.abs(this.x - fcx) > boundX) {
+                                 this.x = fcx + Math.sign(this.x - fcx) * boundX;
+                                 this.speedX *= -0.5;
                              }
 
-
-                         } else if (isShaking) { // Mode 2: THINKING (Whirlpool) - Slower
-                             const cx = faceCenter.x; const cy = faceCenter.y;
-                             const dx_c = this.x - cx; const dy_c = this.y - cy;
+                         } else if (isShaking) { // Mode 2: THINKING (Whirlpool) - SLOWER SWIRL
+                             const cx = faceCenter.x;
+                             const cy = faceCenter.y;
+                             const dx_c = this.x - cx;
+                             const dy_c = this.y - cy;
                              const dist_c = Math.sqrt(dx_c*dx_c + dy_c*dy_c) || 0.1;
-                             const pullStrength = 0.04; // CHANGE: Reduced from 0.05
-                             const swirlStrength = 0.04; // CHANGE: Reduced from 0.065
+                             const pullStrength = 0.018; // Slower swirl
+                             const swirlStrength = 0.018; // Slower swirl
+                             const maxSpeed = 3.0;        // Slower max speed
                              const maxPullDist = cx * 0.95; let pullFactor = 0;
                              if (dist_c < maxPullDist) { pullFactor = pullStrength * (1 - (dist_c / maxPullDist)); }
                              let targetSpeedX = -dx_c * pullFactor; let targetSpeedY = -dy_c * pullFactor;
                              targetSpeedX += -dy_c * swirlStrength * (dist_c / cx);
                              targetSpeedY += dx_c * swirlStrength * (dist_c / cx);
-                             const interpolationFactor = 0.15; // Keep interpolation the same for responsiveness to change
+                             const interpolationFactor = 0.12;
                              this.speedX += (targetSpeedX - this.speedX) * interpolationFactor;
                              this.speedY += (targetSpeedY - this.speedY) * interpolationFactor;
-                             const maxSpeed = 5.0; // CHANGE: Reduced max speed slightly
                              const speedSq = this.speedX * this.speedX + this.speedY * this.speedY;
                              if (speedSq > maxSpeed * maxSpeed) { const currentSpeed = Math.sqrt(speedSq); this.speedX = (this.speedX / currentSpeed) * maxSpeed; this.speedY = (this.speedY / currentSpeed) * maxSpeed; }
                              this.x += this.speedX; this.y += this.speedY;
@@ -432,8 +574,9 @@
                              if (dist_c < shrinkDistance) { const shrinkFactor = Math.max(0, (shrinkDistance - dist_c) / shrinkDistance); this.alpha = this.baseAlpha * (1 - shrinkFactor * 0.8); this.size = this.baseSize * (1 - shrinkFactor * 0.7);
                              } else { if (this.alpha < this.baseAlpha) this.alpha += (this.baseAlpha - this.alpha) * 0.02; if (this.size < this.baseSize) this.size += (this.baseSize - this.size) * 0.02; }
 
-                         } else { // Mode 3: IDLE (Gentle Bounce/Swirl) - Unchanged
-                             const cx = orbCanvas.width / 2; const cy = orbCanvas.height / 2;
+                         } else { // Mode 3: IDLE
+                             const cx = faceCenter.x;
+                             const cy = faceCenter.y;
                              const boundR = cx - this.size * 1.5;
                              let tSX = this.baseSpeedX * 1.5; let tSY = this.baseSpeedY * 1.5;
                              const idleInterpolation = 0.03;
@@ -449,37 +592,36 @@
                              if (this.size < this.baseSize) this.size += (this.baseSize - this.size) * 0.03;
                          }
 
-                         // --- Common Updates (Hue, Clamping) ---
-                         let hueShiftRate = isSpeaking ? 0.08 : (isShaking ? 0.09 : 0.05); // Faster hue shift during speech wave
+                         // --- Common Updates ---
+                         let hueShiftRate = isSpeaking ? 0.08 : (isShaking ? 0.09 : 0.05);
                          let hDiff = targetOrbHue - this.hue; if (hDiff > 180) hDiff -= 360; if (hDiff < -180) hDiff += 360;
                          this.hue = (this.hue + hDiff * hueShiftRate + 360) % 360;
                          this.alpha = Math.max(0.05, Math.min(1.0, this.alpha));
-                         this.size = Math.max(0.1, this.size);
+                         this.size = Math.max(0.1, this.size); // Keep minimum size small
 
                      } catch (e) { console.error("Error updating particle:", e, this); this.x = orbCanvas.width / 2; this.y = orbCanvas.height / 2; this.speedX = 0; this.speedY = 0; this.alpha = this.baseAlpha; this.size = this.baseSize; }
                  }
 
-                 draw() { // Draws particle based on its current state
+                 draw() {
                      if (!orbCtx || !orbCanvas?.width) return;
                      try {
                           let eLight = this.light; let eAlpha = this.alpha;
                           let eSat = this.sat; let eSize = this.size;
                           let eBlur = 1; let eShadowAlpha = 0.3;
+                          const fcy = faceCenter.y;
 
-                          if (isSpeaking) { // SPEAKING WAVE
-                               eBlur = 0.5; eShadowAlpha = 0.25; // Subtle blur/shadow
-                               const zFactorSize = 0.10; const zFactorAlpha = 0.15; // Reduced Z effect for wave
-                               eSize = Math.max(0.1, eSize * (1 + this.landmarkZ * zFactorSize)); // Subtle Z scaling
+                          if (isSpeaking) {
+                               eBlur = 0.5; eShadowAlpha = 0.25;
+                               const zFactorSize = 0.10; const zFactorAlpha = 0.15;
+                               eSize = Math.max(0.1, eSize * (1 + this.landmarkZ * zFactorSize));
                                eAlpha = Math.max(0.05, Math.min(1, eAlpha * (1 + this.landmarkZ * zFactorAlpha)));
-                               // Optionally vary color with wave height
-                               const waveOffsetY = this.y - faceCenter.y; // Offset from center line
-                               eLight = Math.max(35, Math.min(90, this.light + waveOffsetY * 0.15)); // Light varies with height
-                               eSat = Math.max(50, Math.min(100, this.sat + Math.abs(waveOffsetY * 0.4))); // Sat varies with abs height
-                          } else if (isShaking) { // THINKING
+                               const waveOffsetY = this.y - fcy;
+                               eLight = Math.max(35, Math.min(90, this.light + waveOffsetY * 0.15));
+                               eSat = Math.max(50, Math.min(100, this.sat + Math.abs(waveOffsetY * 0.4)));
+                          } else if (isShaking) {
                                eBlur = 2.5; eShadowAlpha = 0.45;
-                               // Use dynamic alpha/size from update()
-                          } else { // IDLE
-                               const zFactorSize = 0.10; // Subtle Z scaling for idle depth
+                          } else {
+                               const zFactorSize = 0.10;
                                const zFactorAlpha = 0.15;
                                eSize = Math.max(0.1, eSize * (1 + this.landmarkZ * zFactorSize));
                                eAlpha = Math.max(0.05, Math.min(1, eAlpha * (1 + this.landmarkZ * zFactorAlpha)));
@@ -496,96 +638,135 @@
                  }
             } // End OrbParticle Class
 
-             function initOrbParticles() { // Assigns particles to landmarks for initial placement and Z-depth info
+             function initOrbParticles() { // Unchanged
                 if (!orbCanvas || !orbCtx || !setupOrbCanvas() || !faceCenter.x) { orbParticlesArray = []; console.warn("Orb canvas or faceCenter not ready for initOrbParticles."); return; }
                 orbParticlesArray = []; const landmarkKeys = Object.keys(faceLandmarks); const numLandmarks = landmarkKeys.length; if (numLandmarks === 0) { console.error("No landmarks defined!"); return; }
                 const particleDistribution = {}; let totalWeight = 0;
-                // Spread particles somewhat evenly for wave, but use landmark Z
                 landmarkKeys.forEach(key => { particleDistribution[key] = 1; totalWeight += 1; });
                 console.log(`Assigning ${orbNumberOfParticles} particles.`);
                 let particlesAssigned = 0;
-                landmarkKeys.forEach(key => { const landmarkData = faceLandmarks[key]; if (!landmarkData) return; const numParticlesForKey = Math.round((particleDistribution[key] / totalWeight) * orbNumberOfParticles); for (let i = 0; i < numParticlesForKey && particlesAssigned < orbNumberOfParticles; i++) { const p = new OrbParticle(); p.targetLandmarkKey = key; // Store key to get Z value later
-                           p.landmarkZ = landmarkData.z || 0; // Store Z value
-                           // Initial position is now randomized within the orb radius
+                landmarkKeys.forEach(key => { const landmarkData = faceLandmarks[key]; if (!landmarkData) return; const numParticlesForKey = Math.round((particleDistribution[key] / totalWeight) * orbNumberOfParticles); for (let i = 0; i < numParticlesForKey && particlesAssigned < orbNumberOfParticles; i++) { const p = new OrbParticle(); p.targetLandmarkKey = key;
+                           p.landmarkZ = landmarkData.z || 0;
                            const r=(orbCanvas.width || 90)/2;
-                           const ir=r*(0.1+Math.random()*0.85); // Start within 85% of radius
+                           const ir=r*(0.1+Math.random()*0.85);
                            const a=Math.random()*Math.PI*2;
                            p.x=faceCenter.x+Math.cos(a)*ir;
                            p.y=faceCenter.y+Math.sin(a)*ir;
-                           p.baseY = faceCenter.y + landmarkData.y; // Set base Y anchor to landmark's Y relative to center (for subtle wave shape)
+                           p.baseY = faceCenter.y + landmarkData.y;
                            orbParticlesArray.push(p); particlesAssigned++; } });
                 let currentLandmarkIndex = 0; while(particlesAssigned < orbNumberOfParticles){ const key = landmarkKeys[currentLandmarkIndex % numLandmarks]; const landmarkData = faceLandmarks[key]; if (!landmarkData) { currentLandmarkIndex++; continue; } const p = new OrbParticle(); p.targetLandmarkKey = key; p.landmarkZ = landmarkData.z || 0; const r=(orbCanvas.width || 90)/2; const ir=r*(0.1+Math.random()*0.85); const a=Math.random()*Math.PI*2; p.x=faceCenter.x+Math.cos(a)*ir; p.y=faceCenter.y+Math.sin(a)*ir; p.baseY = faceCenter.y + landmarkData.y; orbParticlesArray.push(p); particlesAssigned++; currentLandmarkIndex++; }
                 console.log(`Initialized ${orbParticlesArray.length} total orb particles.`);
              }
 
-             function animateOrb() { // Main Orb Animation Loop - Simplified
+             function animateOrb() { // Unchanged
                  if (!orbCtx || !orbCanvas || orbCanvas.width <= 0 || orbCanvas.height <= 0) { orbAnimationFrameId = requestAnimationFrame(animateOrb); return; }
-
                  const now = Date.now();
-
-                 // Always update and draw all particles
-                 // The particle's update() method determines behavior based on isSpeaking/isShaking
                  orbCtx.clearRect(0, 0, orbCanvas.width, orbCanvas.height);
                  orbParticlesArray.forEach(p => {
-                     p.update(now); // Pass time for wave calculation
-                     p.draw();      // Draw handles Z-depth based on state
+                     p.update(now);
+                     p.draw();
                  });
-
-                 orbAnimationFrameId = requestAnimationFrame(animateOrb); // Request next frame
+                 orbAnimationFrameId = requestAnimationFrame(animateOrb);
              }
 
             function stopAnimations() { if (bgAnimationFrameId) { cancelAnimationFrame(bgAnimationFrameId); bgAnimationFrameId = null; } if (orbAnimationFrameId) { cancelAnimationFrame(orbAnimationFrameId); orbAnimationFrameId = null; } }
-            function startAnimations() { stopAnimations(); if (bgCtx && bgCanvas?.width > 0) { bgAnimationFrameId = requestAnimationFrame(animateBgParticles); } if (setupOrbCanvas() && orbCtx ) { // Only need context now
+            function startAnimations() { stopAnimations(); if (bgCtx && bgCanvas?.width > 0) { bgAnimationFrameId = requestAnimationFrame(animateBgParticles); } if (setupOrbCanvas() && orbCtx ) {
                  orbAnimationFrameId = requestAnimationFrame(animateOrb); } }
-            function handleResize() { clearTimeout(resizeTimeout); resizeTimeout = setTimeout(() => { stopAnimations(); setupBgCanvas(); setupOrbCanvas(); initOrbParticles(); startAnimations(); }, 300); } // Re-init particles on resize
-            function setupEventListeners() { orbShapeDiv?.addEventListener('mousemove', (event) => { if (isSpeaking || isShaking) return; try { const rect = orbShapeDiv.getBoundingClientRect(); const cx = rect.left + rect.width / 2; const cy = rect.top + rect.height / 2; const angle = Math.atan2(event.clientY - cy, event.clientX - cx) * (180 / Math.PI); targetOrbHue = (angle + 360) % 360; } catch(e) {} }); questionInput?.addEventListener('input', adjustTextareaHeight); questionInput?.addEventListener('keypress', function (e) { if (e.key === 'Enter' && !e.shiftKey && !thinkingFlag) { e.preventDefault(); askQuestion(); } }); modelSelector?.addEventListener('change', (e) => { selectedModel = e.target.value; questionInput.disabled = !selectedModel; saveSettings(); }); modeSelector?.addEventListener('change', (e) => { selectedMode = e.target.value; if (selectedMode === 'custom') { openSystemPromptEditor(); } else { currentSystemPrompt = MODE_PROMPTS[selectedMode] || ""; updateModeSelectorTooltip(); saveSettings(); } }); voiceSelector?.addEventListener('change', (e) => { const idx = e.target.value; if (idx === "default" || !availableVoices[parseInt(idx)]) { selectedVoice = null; console.log("Selected default voice"); } else { try { selectedVoice = availableVoices[parseInt(idx)]; console.log("Selected voice:", selectedVoice.name); } catch (err) { console.error("Error selecting voice by index:", err); selectedVoice = null; voiceSelector.value = "default"; } } saveSettings(); });
-                 ttsToggleButton?.addEventListener('click', () => { // Use button now
-                     isTtsEnabled = !isTtsEnabled; // Toggle state
-                     updateTtsButtonState(); // Update button appearance
+            function handleResize() { clearTimeout(resizeTimeout); resizeTimeout = setTimeout(() => { stopAnimations(); setupBgCanvas(); setupOrbCanvas(); initOrbParticles(); startAnimations(); }, 300); }
+            function setupEventListeners() { orbShapeDiv?.addEventListener('mousemove', (event) => { if (isSpeaking || isShaking) return; try { const rect = orbShapeDiv.getBoundingClientRect(); const cx = rect.left + rect.width / 2; const cy = rect.top + rect.height / 2; const angle = Math.atan2(event.clientY - cy, event.clientX - cx) * (180 / Math.PI); targetOrbHue = (angle + 360) % 360; } catch(e) {} }); questionInput?.addEventListener('input', adjustTextareaHeight); questionInput?.addEventListener('keypress', function (e) { if (e.key === 'Enter' && !e.shiftKey && !thinkingFlag) { e.preventDefault(); askQuestion(); } }); modelSelector?.addEventListener('change', (e) => { selectedModel = e.target.value; questionInput.disabled = !selectedModel; saveSettings(); }); modeSelector?.addEventListener('change', (e) => { selectedMode = e.target.value; if (selectedMode === 'custom') { openSystemPromptEditor(); } else { currentSystemPrompt = MODE_PROMPTS[selectedMode] || MODE_PROMPTS['default']; updateModeSelectorTooltip(); saveSettings(); } }); voiceSelector?.addEventListener('change', (e) => { const idx = e.target.value; if (idx === "default" || !availableVoices[parseInt(idx)]) { selectedVoice = null; console.log("Selected default voice"); } else { try { selectedVoice = availableVoices[parseInt(idx)]; console.log("Selected voice:", selectedVoice.name); } catch (err) { console.error("Error selecting voice by index:", err); selectedVoice = null; voiceSelector.value = "default"; } } saveSettings(); });
+                 ttsToggleButton?.addEventListener('click', () => {
+                     isTtsEnabled = !isTtsEnabled;
+                     updateTtsButtonState();
                      if (!isTtsEnabled) {
                          window.speechSynthesis.cancel();
-                         isSpeaking = false; // Ensure speaking stops if TTS is disabled
-                         // isShaking = false; // CHANGE: Don't stop shaking here, handled elsewhere
+                         isSpeaking = false;
                          resetTtsControls();
-                         // Only show input controls if not currently generating
                          if (!thinkingFlag) { showInputControls(true); }
                      } else {
-                         // If TTS was already speaking (unlikely edge case but possible), ensure controls show
                          if (isSpeaking) showTtsControls();
                      }
                      saveSettings();
                  });
-                 clearChatButton?.addEventListener('click', () => { if (thinkingFlag) return; if (confirm("Clear chat history AND context?")) { chatHistory = []; chatDisplayArea.innerHTML = ''; window.speechSynthesis.cancel(); isSpeaking = false; isShaking = false; resetTtsControls(); if(regenerateButton) regenerateButton.style.display = 'none'; lastSubmission = {}; /* Context Indicator Removed */ showInputControls(true); } });
+                 clearChatButton?.addEventListener('click', () => { if (thinkingFlag) return; if (confirm("Clear chat history AND context?")) { chatHistory = []; chatDisplayArea.innerHTML = ''; window.speechSynthesis.cancel(); isSpeaking = false; isShaking = false; resetTtsControls(); if(regenerateButton) regenerateButton.style.display = 'none'; lastSubmission = {}; showInputControls(true); } });
                  clearContextButton?.addEventListener('click', clearChatContext);
                  stopGeneratingButton?.addEventListener('click', () => {
                      if (currentAbortController) {
                          console.log("User requested stop.");
-                         currentAbortController.abort(); // Stop Ollama stream
+                         currentAbortController.abort();
                      }
-                     // CHANGE: Also stop TTS
                      if ('speechSynthesis' in window && window.speechSynthesis.speaking) {
                          console.log("Stopping TTS due to Stop button.");
                          window.speechSynthesis.cancel();
-                         isSpeaking = false; // Update state
-                         resetTtsControls(); // Reset TTS UI
-                         // Ensure input controls are re-enabled immediately after stopping TTS this way
-                         // But only if generation isn't *still* happening (edge case, likely already aborted)
+                         isSpeaking = false;
+                         resetTtsControls();
                          if (!thinkingFlag) {
                             showInputControls(true);
                          }
                      }
-                     // Shake will be stopped in the askQuestionInternal finally block when aborted
                  });
-                 playPauseButton?.addEventListener('click', () => { if (!isSpeaking && !speechSynthesis.paused) return; try { if (speechSynthesis.paused) { console.log("Resuming TTS"); speechSynthesis.resume(); playPauseButton.classList.remove('paused'); playPauseButton.classList.add('playing'); playPauseButton.title = 'Pause Speech'; } else if (speechSynthesis.speaking) { console.log("Pausing TTS"); speechSynthesis.pause(); playPauseButton.classList.remove('playing'); playPauseButton.classList.add('paused'); playPauseButton.title = 'Play Speech'; } } catch(e) { console.error("Error pausing/resuming TTS:", e); } }); fastForwardButton?.addEventListener('click', () => { currentRateIndex = (currentRateIndex + 1) % ttsRates.length; const nextRate = ttsRates[currentRateIndex]; if(ffRateDisplay) ffRateDisplay.textContent = `${nextRate.toFixed(1)}x`; const nextNextRate = ttsRates[(currentRateIndex + 1) % ttsRates.length]; fastForwardButton.title = `Cycle Speech Rate (Now ${nextRate.toFixed(1)}x, Next: ${nextNextRate.toFixed(1)}x)`; if (currentUtterance && isSpeaking) { currentUtterance.rate = nextRate; } }); toggleSnippetsButton?.addEventListener('click', () => { const isVisible = snippetsPanel.style.display === 'block'; if (!isVisible) { renderSnippetsPanel(); snippetsPanel.style.display = 'block'; } else { snippetsPanel.style.display = 'none'; } }); systemPromptButton?.addEventListener('click', openSystemPromptEditor); systemPromptSaveButton?.addEventListener('click', saveSystemPrompt); systemPromptCancelButton?.addEventListener('click', closeSystemPromptEditor); systemPromptCloseButton?.addEventListener('click', closeSystemPromptEditor); temperatureControl?.addEventListener('input', handleParamChange); topPControl?.addEventListener('input', handleParamChange); topKControl?.addEventListener('input', handleParamChange); repeatPenaltyControl?.addEventListener('input', handleParamChange); seedControl?.addEventListener('input', handleParamChange); numCtxControl?.addEventListener('input', handleParamChange); stopControl?.addEventListener('input', handleParamChange); resetParamsButton?.addEventListener('click', resetParameters); regenerateButton?.addEventListener('click', regenerateLastResponse); modelInfoButton?.addEventListener('click', showModelInfo); modelInfoOkButton?.addEventListener('click', closeModelInfo); modelInfoCloseButton?.addEventListener('click', closeModelInfo); deleteModelButton?.addEventListener('click', deleteOllamaModel); presetSelector?.addEventListener('change', loadSelectedPreset); savePresetButton?.addEventListener('click', saveCurrentPreset); deletePresetButton?.addEventListener('click', deleteSelectedPreset); exportPresetsButton?.addEventListener('click', exportPresets); importPresetsButton?.addEventListener('click', triggerImportPresets); importPresetsInput?.addEventListener('change', importPresets);
-                 // --- Delegated Body Click Handler ---
+                 playPauseButton?.addEventListener('click', () => { // ** UPDATED **
+                     if (!currentUtterance && !speechSynthesis.speaking && !speechSynthesis.paused) return; // Can't play/pause if nothing exists
+                     try {
+                         let needsIconRefresh = false;
+                         if (speechSynthesis.paused) {
+                             console.log("Resuming TTS");
+                             speechSynthesis.resume();
+                             playPauseButton.classList.remove('paused');
+                             playPauseButton.classList.add('playing');
+                             playPauseButton.classList.add('tts-playing'); // Add playing color
+                             playPauseButton.title = 'Pause Speech';
+                             if (playPauseIcon) playPauseIcon.setAttribute('data-feather', 'pause');
+                             needsIconRefresh = true;
+                         } else if (speechSynthesis.speaking) {
+                             console.log("Pausing TTS");
+                             speechSynthesis.pause();
+                             playPauseButton.classList.remove('playing');
+                             playPauseButton.classList.remove('tts-playing'); // Remove playing color
+                             playPauseButton.classList.add('paused');
+                             playPauseButton.title = 'Play Speech';
+                             if (playPauseIcon) playPauseIcon.setAttribute('data-feather', 'play');
+                             needsIconRefresh = true;
+                         }
+                         // If clicked when there's a paused utterance, resume it
+                         else if (currentUtterance && speechSynthesis.paused) {
+                              console.log("Resuming TTS from explicit pause");
+                              speechSynthesis.resume();
+                              playPauseButton.classList.remove('paused');
+                              playPauseButton.classList.add('playing');
+                              playPauseButton.classList.add('tts-playing');
+                              playPauseButton.title = 'Pause Speech';
+                              if (playPauseIcon) playPauseIcon.setAttribute('data-feather', 'pause');
+                              needsIconRefresh = true;
+                         }
+                         // If an utterance exists but isn't playing/paused (e.g., finished), re-speak? This might be complex.
+                         // Let's keep it simple: only act if speaking or paused.
+
+                         if (needsIconRefresh && playPauseIcon && typeof feather !== 'undefined') {
+                             feather.replace({ 'stroke-width': 1.8, width: 14, height: 14 });
+                         }
+                     } catch(e) { console.error("Error pausing/resuming TTS:", e); }
+                 });
+                 fastForwardButton?.addEventListener('click', () => { currentRateIndex = (currentRateIndex + 1) % ttsRates.length; const nextRate = ttsRates[currentRateIndex]; if(ffRateDisplay) ffRateDisplay.textContent = `${nextRate.toFixed(1)}x`; const nextNextRate = ttsRates[(currentRateIndex + 1) % ttsRates.length]; fastForwardButton.title = `Cycle Speech Rate (Now ${nextRate.toFixed(1)}x, Next: ${nextNextRate.toFixed(1)}x)`; if (currentUtterance && isSpeaking) { currentUtterance.rate = nextRate; } }); toggleSnippetsButton?.addEventListener('click', () => { const isVisible = snippetsPanel.style.display === 'block'; if (!isVisible) { renderSnippetsPanel(); snippetsPanel.style.display = 'block'; } else { snippetsPanel.style.display = 'none'; } }); systemPromptButton?.addEventListener('click', openSystemPromptEditor); systemPromptSaveButton?.addEventListener('click', saveSystemPrompt); systemPromptCancelButton?.addEventListener('click', closeSystemPromptEditor); systemPromptCloseButton?.addEventListener('click', closeSystemPromptEditor); temperatureControl?.addEventListener('input', handleParamChange); topPControl?.addEventListener('input', handleParamChange); topKControl?.addEventListener('input', handleParamChange); repeatPenaltyControl?.addEventListener('input', handleParamChange); seedControl?.addEventListener('input', handleParamChange); numCtxControl?.addEventListener('input', handleParamChange); stopControl?.addEventListener('input', handleParamChange); resetParamsButton?.addEventListener('click', resetParameters); regenerateButton?.addEventListener('click', regenerateLastResponse); modelInfoButton?.addEventListener('click', showModelInfo); modelInfoOkButton?.addEventListener('click', closeModelInfo); modelInfoCloseButton?.addEventListener('click', closeModelInfo); deleteModelButton?.addEventListener('click', deleteOllamaModel); presetSelector?.addEventListener('change', loadSelectedPreset); savePresetButton?.addEventListener('click', saveCurrentPreset); deletePresetButton?.addEventListener('click', deleteSelectedPreset); exportPresetsButton?.addEventListener('click', exportPresets); importPresetsButton?.addEventListener('click', triggerImportPresets); importPresetsInput?.addEventListener('change', importPresets);
                  document.body.addEventListener('click', function(event) { const button = event.target.closest('button'); if (!button) return; try { const codeWrapper = button.closest('.code-block-wrapper'); const snippetLi = button.closest('#snippetsList li'); if (codeWrapper && chatDisplayArea.contains(codeWrapper)) { const rawCode = button.dataset.code; const lang = button.dataset.lang || 'text'; let actionPromptText = ''; if (button.classList.contains('code-copy-button')) { if (rawCode) navigator.clipboard.writeText(rawCode).then(() => flashButtonState(button, 'copied', 'copy')).catch(err => { console.error('Code copy failed:', err); }); } else if (button.classList.contains('use-code-button')) { if (rawCode) { questionInput.value = rawCode + '\n'; adjustTextareaHeight(); questionInput.focus(); } } else if (button.classList.contains('edit-code-button')) { openCodeEditorModal(codeWrapper); } else if (button.classList.contains('save-snippet-button')) { if (rawCode) addSnippet(lang, rawCode, button); } else if (button.classList.contains('play-code-button')) { if (rawCode && 'speechSynthesis' in window) { console.log("Playing code snippet via TTS."); speakText(rawCode, true, button); } else if (!('speechSynthesis' in window)) { alert("Speech Synthesis not supported in your browser."); } } else if (button.classList.contains('action-explain-button')) { if(rawCode) actionPromptText = `Analyze the following ${lang} code. Rewrite the entire code block, adding brief explanations in square brackets \`[like this]\` to the right of significant lines or logical blocks. Focus on explaining the purpose or action of the code. Keep explanations concise. Preserve the original code formatting and indentation as much as possible.\n\n\`\`\`${lang}\n${rawCode}\n\`\`\``; } else if (button.classList.contains('action-refactor-button')) { if(rawCode) actionPromptText = `Refactor the following ${lang} code for clarity and efficiency:\n\n\`\`\`${lang}\n${rawCode}\n\`\`\``; } else if (button.classList.contains('action-find-bugs-button')) { if(rawCode) actionPromptText = `Analyze the following ${lang} code for potential bugs, errors, or anti-patterns. Explain any issues found:\n\n\`\`\`${lang}\n${rawCode}\n\`\`\``; } else if (button.classList.contains('action-optimize-button')) { if(rawCode) actionPromptText = `Suggest optimizations for the following ${lang} code (speed or memory usage). Explain the suggested changes:\n\n\`\`\`${lang}\n${rawCode}\n\`\`\``; } else if (button.classList.contains('action-document-button')) { if(rawCode) actionPromptText = `Add documentation (like docstrings or comments) to the following ${lang} code. Explain the purpose of the code and its parameters/return values if applicable:\n\n\`\`\`${lang}\n${rawCode}\n\`\`\``; } if (actionPromptText) { askActionPrompt(actionPromptText, button.title || "Code Action"); } } else if (snippetLi && snippetsPanel.contains(snippetLi)) { const index = parseInt(button.dataset.index, 10); if (!isNaN(index)) { if (button.classList.contains('use-snippet-button')) { useSnippet(index); } else if (button.classList.contains('delete-snippet-button')) { if (confirm(`Delete snippet: ${snippetLi.querySelector('.snippet-preview')?.textContent || index}?`)) { deleteSnippet(index); } } } } else if (button === modalSaveButton) { saveModalChanges(); } else if (button === modalCancelButton || button === modalCloseButton) { closeCodeEditorModal(); } else if (button === systemPromptSaveButton) { saveSystemPrompt(); } else if (button === systemPromptCancelButton || button === systemPromptCloseButton) { closeSystemPromptEditor(); } else if (button === modelInfoOkButton || button === modelInfoCloseButton) { closeModelInfo(); } else if (button === deleteModelButton) { deleteOllamaModel(event); } } catch (e) { console.error("Error in delegated body click handler:", e); } }); advancedControlsGrid?.addEventListener('click', (event) => { const infoButton = event.target.closest('.info-button'); if (infoButton) { event.stopPropagation(); showParamInfoTooltip(infoButton); } }); codeEditorModal?.addEventListener('click', (event) => { if (event.target === codeEditorModal) closeCodeEditorModal(); }); systemPromptModal?.addEventListener('click', (event) => { if (event.target === systemPromptModal) closeSystemPromptEditor(); }); modelInfoModal?.addEventListener('click', (event) => { if (event.target === modelInfoModal) closeModelInfo(); }); window.addEventListener('resize', handleResize); if ('speechSynthesis' in window) { if (speechSynthesis.onvoiceschanged !== undefined) { speechSynthesis.onvoiceschanged = populateVoiceList; console.log("Attached onvoiceschanged listener."); } setTimeout(populateVoiceList, 250); setTimeout(populateVoiceList, 1000); } else { console.warn("Speech Synthesis not supported. TTS features disabled."); } }
             async function fetchAndPopulateModels() { try { const response = await fetch('http://localhost:11434/api/tags'); if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`); const data = await response.json(); modelSelector.innerHTML = ''; if (data.models && data.models.length > 0) { data.models.sort((a, b) => a.name.localeCompare(b.name)); let defaultModelFound = false; const loadedModelPref = selectedModel; data.models.forEach((model) => { const option = document.createElement('option'); option.value = model.name; option.textContent = model.name.replace(':latest', ''); modelSelector.appendChild(option); if (loadedModelPref && model.name === loadedModelPref) { option.selected = true; selectedModel = model.name; defaultModelFound = true; } }); if (!defaultModelFound && modelSelector.options.length > 0) { modelSelector.options[0].selected = true; selectedModel = modelSelector.options[0].value; } else if (modelSelector.options.length === 0) { modelSelector.innerHTML = '<option value="">No models found</option>'; selectedModel = ''; } console.log("Models populated. Selected:", selectedModel); questionInput.disabled = !selectedModel; questionInput.placeholder = selectedModel ? "Ask Orbi" : "Select a model"; } else { modelSelector.innerHTML = '<option value="">No models installed</option>'; selectedModel = ''; questionInput.disabled = true; questionInput.placeholder = "No models installed"; console.warn("No Ollama models found."); if (systemInfo) { systemInfo.textContent = "Status: No models found"; systemInfo.style.color = 'orange'; systemInfo.style.opacity = '1'; } } } catch (error) { console.error("Error fetching models:", error); modelSelector.innerHTML = '<option value="">Error loading models</option>'; selectedModel = ''; questionInput.disabled = true; questionInput.placeholder = "Error loading models"; if(systemInfo) { systemInfo.textContent = `Error fetching models: ${error.message}`; systemInfo.style.opacity = '1'; systemInfo.style.color = 'red'; } } }
-            async function initializeOrb() { console.log("Initializing Orbi..."); if(systemInfo) { systemInfo.textContent = "Status: Initializing..."; systemInfo.style.opacity = '1'; } createParamInfoTooltip(); loadPresets(); populatePresetSelector(); // Load presets before settings
-                 populateVoiceList(); // Populate voices early
-                 await fetchAndPopulateModels(); // Then fetch models
-                 loadSettings(); // Load settings AFTER voices/models/presets are available
-                 chatDisplayArea.innerHTML = ''; adjustTextareaHeight(); updateParameterDisplay(); updateModeSelectorTooltip(); /* Context Indicator Removed */ if ('speechSynthesis' in window) { window.speechSynthesis.cancel(); } isSpeaking = false; isShaking = false; resetTtsControls(); if(ffRateDisplay) ffRateDisplay.textContent = `${ttsRates[currentRateIndex].toFixed(1)}x`; if(fastForwardButton) fastForwardButton.title = `Cycle Speech Rate (Now ${ttsRates[currentRateIndex].toFixed(1)}x, Next: ${ttsRates[(currentRateIndex + 1) % ttsRates.length].toFixed(1)}x)`; if(playPauseButton) { playPauseButton.classList.add('paused'); playPauseButton.title = 'Play Speech'; }
-                 setupEventListeners(); showInputControls(true); if(regenerateButton) regenerateButton.style.display = lastSubmission.prompt ? 'inline-flex' : 'none'; let canRunBg = false, canRunOrb = false; if(bgCtx) { canRunBg = setupBgCanvas(); if(canRunBg) initBgParticles(); } if (setupOrbCanvas() && orbCtx) { initOrbParticles(); canRunOrb = true; } // Init particles needed for idle/thinking/wave
+            async function initializeOrb() { console.log("Initializing Orbi..."); if(systemInfo) { systemInfo.textContent = "Status: Initializing..."; systemInfo.style.opacity = '1'; } createParamInfoTooltip(); loadPresets(); populatePresetSelector();
+                 populateVoiceList();
+                 await fetchAndPopulateModels();
+                 loadSettings();
+                 chatDisplayArea.innerHTML = ''; adjustTextareaHeight(); updateParameterDisplay(); updateModeSelectorTooltip(); if ('speechSynthesis' in window) { window.speechSynthesis.cancel(); } isSpeaking = false; isShaking = false; resetTtsControls(); if(ffRateDisplay) ffRateDisplay.textContent = `${ttsRates[currentRateIndex].toFixed(1)}x`; if(fastForwardButton) fastForwardButton.title = `Cycle Speech Rate (Now ${ttsRates[currentRateIndex].toFixed(1)}x, Next: ${ttsRates[(currentRateIndex + 1) % ttsRates.length].toFixed(1)}x)`;
+                 if(playPauseButton && playPauseIcon) { // Ensure initial state is set
+                     playPauseButton.classList.add('paused');
+                     playPauseButton.classList.remove('playing', 'tts-playing');
+                     playPauseButton.title = 'Play Speech';
+                     playPauseIcon.setAttribute('data-feather', 'play');
+                 }
+                 setupEventListeners();
+                 if (typeof feather !== 'undefined') {
+                     feather.replace({ 'stroke-width': 1.8, width: 14, height: 14 });
+                 } else {
+                     console.warn("Feather Icons script not loaded.");
+                 }
+                 showInputControls(true); if(regenerateButton) regenerateButton.style.display = lastSubmission.prompt ? 'inline-flex' : 'none'; let canRunBg = false, canRunOrb = false; if(bgCtx) { canRunBg = setupBgCanvas(); if(canRunBg) initBgParticles(); } if (setupOrbCanvas() && orbCtx) { initOrbParticles(); canRunOrb = true; }
                  startAnimations(); setTimeout(() => { if (systemInfo && systemInfo.textContent === "Status: Initializing...") { systemInfo.style.opacity = '0'; systemInfo.textContent = "Status: Ready"; } }, 3000); if (!systemInfo.textContent.startsWith("Error") && systemInfo.textContent !== "Status: No models found") { systemInfo.textContent = "Status: Ready"; } console.log("Orbi Initialized."); if(!questionInput.disabled) questionInput.focus(); }
 
              // --- Start Everything ---
