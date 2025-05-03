@@ -118,6 +118,6 @@ This is currently a single-file project. Contributions like bug fixes, feature s
 This project is licensed under the GPL. See the LICENSE file for details.
 
 
-Enjoy!
+Enjoy the open freedom to prompt!
 
 Bohemai 
