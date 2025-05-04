@@ -7,8 +7,7 @@ It features two modes: direct interaction with Ollama and a web-augmented mode t
 Orbe v1.14 version simplifies the setup with a straightforward Bun process and .html file
 
 
-
-https://github.com/user-attachments/assets/7fbb7e6a-f363-43c2-ac0f-f37ea3ef5c32
+![Uploading Screenshot 2025-05-05 012035.png…]()
 
 
 
