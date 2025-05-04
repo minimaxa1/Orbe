@@ -171,3 +171,4 @@ This project is licensed under the GPL License - see the `LICENSE` file for deta
 Enjoy the freedom of open search and prompt!
 
 Bohemai
+Art: https://www.deviantart.com/bohemai
