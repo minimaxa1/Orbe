@@ -1,11 +1,11 @@
-# Orbi ✨ (Ollama Advanced Web UI)
+# Orbe ✨ (Ollama Advanced Web UI)
 
 
 ![Screenshot 2025-05-02 111030](https://github.com/user-attachments/assets/4a99c2a9-4a78-4c36-a79a-05ff38bf56ec)
 
 
 
-Orbi is a feature-rich, single-file web interface designed to interact directly with a locally running Ollama instance. It provides a highly customizable chat experience with advanced controls, code output, code handling, and configuration management, all within your browser without needing complex server setups. 
+Orbe is a feature-rich, single-file web interface designed to interact directly with a locally running Ollama instance. It provides a highly customizable chat experience with advanced controls, code output, code handling, and configuration management, all within your browser without needing complex server setups. 
 
 ## ✨ Key Features
 
@@ -77,10 +77,10 @@ Orbi is a feature-rich, single-file web interface designed to interact directly 
 
 1.  **Ensure Ollama is running** and accessible at `http://localhost:11434`.
 2.  Node.js is running - open cmd run: npx serve . -l 8080 --cors
-3.  **Download** the `Orbi.html` file.
-4.  **Open** the `Orbi.html` file directly in your web browser (e.g., using `File -> Open File...`).
+3.  **Download** the `orbe.html` file.
+4.  **Open** the `orbe.html` file directly in your web browser (e.g., using `File -> Open File...`).
 
-That's it! Orbi should load, fetch your available Ollama models, and be ready to use.
+That's it! orbe should load, fetch your available Ollama models, and be ready to use.
 
 ## Usage Guide
 
