@@ -6,7 +6,8 @@ It features two primary modes:
 1.  **Direct Ollama:** Chat directly with any locally installed Ollama model, utilizing configurable generation parameters and personality modes.
 2.  **Orbe Web Search:** Leverages a custom Bun backend (`Orbe-backend/server.mjs`) to perform real-time web searches (via Serper API), processes the results (including embedding-based ranking and file identification), combines this context with your query and selected personality mode, and then queries Ollama for a synthesized, context-aware answer.
 
-*(Note: This version description references v1.1 simplifying setup; ensure versioning is consistent if needed.)*
+![image](https://github.com/user-attachments/assets/6bcfcd46-0f7a-422c-ad35-f8c1608ddd07)
+
 
 ## Features
 
