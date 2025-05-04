@@ -1,121 +1,96 @@
-# Orbe ✨ (Ollama Advanced Web UI)
+Orbe - Ai Web Search Edition
 
+An enhanced Orbe web interface for interacting with local Ollama language models and Ai web search built in.
 
+It features two modes: direct interaction with Ollama and a web-augmented mode that uses a custom Bun backend to fetch real-time web search results (via Serper API) before querying Ollama.
 
+Orbe v1.1 version simplifies the setup with a straightforward Bun process and .exe file.
 
-Orbe is a feature-rich, single-file web interface designed to interact directly with a locally running Ollama instance. It provides a highly customizable chat experience with advanced controls, code output, code handling, and configuration management, all within your browser without needing complex server setups. 
+Features
+Dual Modes:
+Direct Ollama: Chat directly with any locally installed Ollama model. Supports configurable parameters (Temperature, Top P, etc.) and personality modes (Coder, Business, Wizard, etc.) applied directly to the Ollama request.
+Orbe Web Search: Queries are sent to the custom Bun backend. The backend performs a web search (Serper), combines results with the query and the selected personality mode's system prompt, and then asks Ollama for a synthesized answer. (Note: Generation parameters like Temperature are not passed to the backend in this mode currently).
+Local First: Relies on your local Ollama instance for LLM inference.
+Simple Bun Backend: Uses a lightweight backend (Orbe-backend/server.mjs) powered by Bun. (If Bun intergrates with Electron, this will further consolidate this extra step into the .exe)
+Configurable Backend: Uses an .env file within the Orbe-backend directory for API keys, Ollama URL, and the default model used by the backend.
+Streaming Responses: Supports streaming responses from both direct Ollama and the web search backend.
+Orbe UI Features: Retains core Orbe features:
+Visual orb animation
+Text-to-Speech (TTS) output
+Code block rendering & actions (Copy, Use, Save Snippet - Note: Explain/Refactor actions disabled in Web Search mode)
+Inline code editing
+Chat history import/export
+Preset saving/loading (saves selected source and Ollama-specific settings)
+File attachments (appends text content to prompt)
+Prerequisites
+Ollama: Must be installed and running locally.
+Ollama Model(s): At least one model needs to be pulled (e.g., ollama pull qwen3:14b). The model specified in the backend's .env (OLLAMA_MODEL) MUST be available.
+Bun: Required to run the custom backend server. Install from the official website (curl -fsSL https://bun.sh/install | bash or check Windows instructions). Verify with bun --version.
+Serper API Key: Required for the web search functionality. Sign up for a free API key.
+Modern Web Browser: Chrome, Firefox, Edge, etc.
+Setup
+Get the Code: Clone the repository and download the 75mb .exe Orbe file (Virus Checked & Tested): https://drive.google.com/file/d/1GYTJZMx1Kd0WsSofsXpH9XcZLcyKvTmR/view?usp=sharing
 
-## ✨ Key Features
+Configure .env: Add the following content, replacing placeholders:
 
-*   **Direct Local Ollama Interaction:** Connects directly to your `http://localhost:11434` Ollama API endpoint.
-*   **Streaming Responses:** Displays AI responses word-by-word as they are generated.
-*   **Model Management:**
-    *   Fetches and displays available Ollama models.
-    *   Select the desired model for conversation.
-    *   View detailed model information (parameters, template, license).
-    *   Delete models directly from the UI.
-*   **🤖 Personality Modes & Prompts:**
-    *   Pre-defined modes (Default, Coder, Business, Creative, Wizard) with tailored system prompts.
-    *   **Wizard Mode:** Aims for direct, concise output without conversational filler.
-    *   Custom system prompt editor for fine-tuning AI behavior.
-    *   **Language Fix:** System prompts explicitly instruct the AI to respond *only* in English.
-*   **⚙️ Advanced Parameter Control:**
-    *   Adjust Temperature, Top P, Top K, Repeat Penalty, Seed, Context Window (`num_ctx`), and Stop Sequences.
-    *   Reset parameters to defaults.
-*   **🗣️ Text-to-Speech (TTS):**
-    *   Enable/disable speech output for AI responses.
-    *   Select from available system voices (filtered for English).
-    *   Pause/resume speech playback.
-    *   Cycle through different speech rates (1.0x, 1.5x, 2.0x).
-*   **📝 Chat & Context Management:**
-    *   Full conversation history displayed.
-    *   Clear entire chat history and context.
-    *   Clear only the context sent to the model (keeps visual history).
-    *   Regenerate the last AI response.
-    *   Visual indicator for the number of turns included in the context window.
-*   **💻 Rich Code Block Handling:**
-    *   Automatic language detection and syntax highlighting (via Prism.js).
-    *   **Copy Code:** Easily copy the code within a block.
-    *   **Save Snippet:** Save code blocks to a persistent snippets panel.
-    *   **Edit Code:** Open code in a modal editor to make changes.
-    *   **Use Code:** Insert code block content directly into the input area.
-    *   **Code Actions:** Buttons to quickly ask the AI to:
-        *   Explain the code.
-        *   Refactor the code.
-        *   Find bugs in the code.
-        *   Optimize the code.
-        *   Add documentation/comments to the code.
-*   **📑 Code Snippet Management:**
-    *   Persistent panel to store and manage saved code snippets.
-    *   View snippets by language and preview.
-    *   Use snippets in the input area.
-    *   Delete snippets.
-*   **💾 Configuration Presets:**
-    *   Save combinations of selected model, mode/system prompt, and generation parameters as named presets.
-    *   Load presets to quickly switch configurations.
-    *   Delete saved presets.
-    *   Export all presets to a JSON file.
-    *   Import presets from a JSON file (overwrites existing).
-*   **🎨 Visual Feedback:**
-    *   Animated particle background.
-    *   Central "orb" visualizer that reacts to AI state (idle, thinking, speaking).
-*   **🔒 Persistence:** Settings, snippets, and presets are saved locally in the browser's `localStorage`.
-*   **🚀 Single-File:** Runs entirely from a single HTML file.
+# --- Orbe Backend Configuration ---
 
-## Prerequisites
+# Port for this backend server to listen on (default: 3001)
+PORT=3001
 
-1.  **Ollama:** You need Ollama installed and running locally.
-    *   Download from [ollama.com](https://ollama.com/).
-    *   Ensure the Ollama server is running (usually via `ollama serve` or the desktop application). It must be accessible at `http://localhost:11434`.
-2.  **Ollama Models:** You need at least one model pulled into Ollama.
-    *   Example: `ollama pull llama3`
-3.  **Modern Web Browser:** Chrome, Firefox, Edge, or Safari recommended. Requires support for Fetch API, Canvas, Web Speech API (for TTS), and ES6 JavaScript.
+# Serper API Key for web search (REQUIRED - Get from serper.dev)
+SERPER_API_KEY=YOUR_SERPER_API_KEY_HERE
 
-## Setup
+# URL of your running Ollama instance (use localhost, backend runs on host)
+OLLAMA_API_URL=http://localhost:11434
 
-1.  **Ensure Ollama is running** and accessible at `http://localhost:11434`.
-2.  Node.js is running - open cmd run: npx serve . -l 8080 --cors
-3.  **Download** the `orbe.html` file.
-4.  **Open** the `orbe.html` file directly in your web browser (e.g., using `File -> Open File...`).
+# Ollama model the BACKEND should use for generating web search responses
+# Make sure this model is pulled in Ollama (e.g., ollama pull qwen3:14b)
+OLLAMA_MODEL=qwen3:14b 
+(Optional but Recommended) Configure Ollama CORS: For the Orbe frontend to list your installed Ollama models in the "Source" dropdown, restart your Ollama server with CORS enabled:
 
-That's it! orbe should load, fetch your available Ollama models, and be ready to use.
+Stop Ollama if running.
+Start using one of these commands:
+CMD: set OLLAMA_ORIGINS=* then ollama serve
+PowerShell: $env:OLLAMA_ORIGINS='*' then ollama serve
+macOS/Linux: OLLAMA_ORIGINS='*' ollama serve
+Keep the Ollama terminal running.
+Running the Application
+You need two components running simultaneously:
 
-## Usage Guide
+Start the Backend Server:
 
-1.  **Select Model:** Choose an available model from the model dropdown list.
-2.  **(Optional) Select Mode:** Choose a personality mode (Default, Coder, etc.) or click "Sys" to set a custom system prompt.
-3.  **(Optional) Adjust Parameters:** Expand "Advanced Options" to fine-tune generation parameters.
-4.  **Ask Question:** Type your query into the text area at the bottom and press `Enter` (or Shift+Enter for newline).
-5.  **Interact:**
-    *   Use controls in the `controls-row` to manage TTS, snippets, chat history, or regenerate responses.
-    *   Interact with code blocks using the buttons provided below them (copy, edit, save, explain, etc.).
-    *   Save/load configurations using the Presets controls.
-    *   TTS: Each web browser has their own preloaded voices - (some are better than others and with more options)
+Open a terminal window.
+Navigate to the Orbe-backend directory.
+Run: bun server.mjs
+Keep this terminal open. Look for the "Starting Orbe backend (Bun)..." message.
+Open the Orbe Frontend:
 
-## Configuration Details
+Navigate to the Orbe.exe file and run.
+Usage
+Select Source: Use the top dropdown menu in the Orbe interface:
+"Orbe Web Search": Uses the running Bun backend. It combines search results with the currently selected Mode's prompt before asking Ollama. Generation parameters (Temperature, etc.) are not currently sent to the backend.
+Ollama Model Name (e.g., "qwen3:14b"): Connects directly to Ollama. All parameters and modes apply. Requires Ollama CORS to be enabled for the list to populate.
+Select Mode (Optional): upload Mode.json file to choose a personality (Default, Coder, Wizard, etc.). This affects both Direct Ollama and Orbe Web Search modes.
+Chat: Type your query and press Enter.
+Troubleshooting
+Frontend UI Issues (Blank Buttons, No Particles): Check the browser's Developer Console (F12 -> Console) for JavaScript errors in the HTML file. Ensure you are using the final corrected HTML version. Make sure Feather Icons script loads (Network tab).
+"Error fetching models" / Dropdown Missing Ollama Models: Your Ollama server likely doesn't have CORS enabled. Restart Ollama using the OLLAMA_ORIGINS='*' command (see Setup Step 5).
+Errors Using "Orbe Web Search":
+Failed to fetch in Orbe UI: The Bun backend (bun server.mjs) is likely not running or not accessible on the configured port (default 3001). Check the backend terminal.
+502 Bad Gateway or Ollama request failed in Orbe UI: The Bun backend was reached, but it failed to get a response from Ollama. Check the backend terminal logs for specific Ollama errors (e.g., 404 Not Found, connection refused). Verify Ollama is running and the OLLAMA_MODEL in .env is correct and available (ollama list).
+Search failed or Search API key not configured: Check the SERPER_API_KEY in the backend's .env file. Ensure it's correct and has queries remaining. Check the backend terminal logs for details.
+Errors Using Direct Ollama Mode: Ensure Ollama is running and accessible at http://localhost:11434 (or your configured address). Check the browser console for CORS errors if the model list populated but requests fail.
+License
+*This project is licensed under GPL. See the LICENSE file for details.
 
-*   **Modes & System Prompt:** Selecting a mode applies a pre-defined system prompt. Clicking "Sys" opens a modal to edit the system prompt directly, automatically switching the mode to "Custom". The Wizard mode is designed for direct command execution.
-*   **Parameters:** Found under "Advanced Options". These directly map to Ollama generation parameters. `Seed=0` means random, `Context Window=0` lets Ollama decide.
-*   **Presets:** Save complex configurations (model + mode/prompt + parameters) for easy recall via the Preset dropdown and save/delete buttons. Import/Export allows sharing or backing up presets.
-*   **TTS:** Toggle TTS on/off. Select a preferred voice from the dropdown (only English voices are listed). Use the play/pause and speed controls during playback.
-*   **Snippets:** Save useful code blocks via the bookmark icon on code blocks. Access them via the "📑" button. Use or delete saved snippets from the panel.
+Acknowledgements
+Ollama Team
+Bun Team
+Serper.dev
+PrismJS
+Feather Icons
+Particles
+Enjoy the open freedom to search and prompt!
 
-## Known Issues / Limitations
-
-*   **CORS:** While designed for `localhost`, if you run Ollama on a different origin, you might encounter CORS issues. Ensure Ollama is configured with appropriate `OLLAMA_ORIGINS`.
-*   **Web Speech API:** TTS functionality depends on browser support for the Web Speech API, which can vary. Voice availability depends on your operating system and browser.
-*   **`localStorage` Limits:** Settings, snippets, and presets are stored in `localStorage`, which has size limits and is specific to the browser profile and origin (the file path if opened locally). Clearing browser data may remove saved items.
-*   **Error Handling:** While attempts are made to catch errors, issues with the Ollama connection or unexpected responses might cause problems. Check the browser's developer console (F12) for detailed errors.
-
-## Contributing
-
-This is currently a single-file project. Contributions like bug fixes, feature suggestions, or UI improvements can be made via standard Git workflows (Pull Requests) if this project is hosted on a platform like GitHub.
-
-## License
-
-This project is licensed under the GPL. See the LICENSE file for details.
-
-
-Enjoy the open freedom to prompt!
-
-Bohemai 
+Bohemai
