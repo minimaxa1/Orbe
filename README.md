@@ -61,7 +61,7 @@ It features two primary modes:
         git clone https://github.com/minimaxa1/Orbe.git
         cd Orbe
         ```
-    *   *(Note: The original description mentioned a separate .exe download. Ensure `Orbi.html` (or potentially renamed to `Orbe.html`) from the repository is the file you intend to use/serve).*
+
 
 2.  **Configure Backend (`.env`):**
     *   Navigate to the `Orbe-backend` directory: `cd Orbe-backend`
@@ -166,10 +166,8 @@ This project is licensed under the GPL License - see the `LICENSE` file for deta
 *   PrismJS ([prismjs.com](https://prismjs.com/))
 *   Feather Icons ([feathericons.com](https://feathericons.com/))
 *   Howler.js ([howlerjs.com](https://howlerjs.com/))
-*   *(Credit for particle script if known)*
+*   Particles lots of particles
 
-## Enjoy!
+Enjoy the freedom of open search and prompt!
 
-Enjoy the open freedom to search and prompt!
-
-*- Bohemai*
+Bohemai
