@@ -4,7 +4,7 @@ An enhanced web interface for interacting with local Ollama language models and 
 
 It features two modes: direct interaction with Ollama and a web-augmented mode that uses a custom Bun backend to fetch real-time web search results (via Serper API) before querying Ollama.
 
-Orbe v1.14 version simplifies the setup with a straightforward Bun process and .html file
+Orbe Search version simplifies the setup with a straightforward Bun process and .html file
 
 
 ![Screenshot 2025-05-05 012035](https://github.com/user-attachments/assets/5594e1f0-8ab4-46bc-bbf3-d1472ad71bdd)
