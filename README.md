@@ -132,6 +132,3 @@ This project is licensed under the terms of the license agreement included in th
 
 Enjoy the Freedom of open search and prompt!
 
-*Bohemai*
-
-Art: https://www.deviantart.com/bohemai
